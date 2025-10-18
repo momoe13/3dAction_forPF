@@ -4,7 +4,6 @@ public class CharaBase : MonoBehaviour
 {
     protected bool moveFlg;
     protected float moveAngle;
-    Animator[] animator;
     [SerializeField]
     float speed = 2.0f;
 
@@ -34,17 +33,29 @@ public class CharaBase : MonoBehaviour
         {
             isGrounded = Physics.CheckSphere(groundCheck.position, groundRadius);
         }
+        Debug.Log(isGrounded);
     }
-
+    protected void Jump()
+    {
+        if (isGrounded)
+        {
+            rb.AddForce(Vector3.up * 5f, ForceMode.Impulse);
+        }
+    }
     protected void MoveCharacter()
     {
         // moveDirectionは派生クラスで設定される（入力 or AIなど）
         Vector3 velocity = moveDirection * moveSpeed;
         velocity.y = rb.linearVelocity.y; // 重力はRigidbodyに任せる
         rb.linearVelocity = velocity;
+        RotateCharacter();
     }
 
-    protected void RotateCharacter()
+    protected void DashCharactor()
+    {
+        speed *= 1.5f;
+    }
+    private void RotateCharacter()
     {
         if (moveDirection.sqrMagnitude > 0.01f)
         {
@@ -52,4 +63,6 @@ public class CharaBase : MonoBehaviour
             rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRot, rotationSpeed * Time.fixedDeltaTime));
         }
     }
+
+
 }

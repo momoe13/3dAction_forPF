@@ -3,10 +3,13 @@ using UnityEngine;
 
 public class Player :CharaBase
 {
-
     [Header("Camera Reference")]
     public Transform cameraTransform;
 
+    [SerializeField]
+    private Animator animator;
+
+    bool dashFlg;
     private void Update()
     {
 
@@ -14,12 +17,7 @@ public class Player :CharaBase
         HandleInput();
     }
 
-    private void FixedUpdate()
-    {
 
-        MoveCharacter();
-        RotateCharacter();
-    }
 
     private void HandleInput()
     {
@@ -40,10 +38,31 @@ public class Player :CharaBase
             camRight.Normalize();
 
             moveDirection = (camForward * v + camRight * h).normalized;
+            animator.SetBool("Move", true);
         }
         else
         {
             moveDirection = Vector3.zero;
+
+            animator.SetBool("Move", false);
+        }
+
+        MoveCharacter();
+        
+        if(Input.GetButtonDown("Jump"))
+        {
+                Jump();
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            moveSpeed *= 1.5f;
+            animator.SetBool("Dash", true);
+        }
+        else if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            moveSpeed /= 1.5f;
+            animator.SetBool("Dash",false);
         }
     }
 
