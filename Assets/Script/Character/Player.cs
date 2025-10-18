@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ public class Player :CharaBase
     [SerializeField]
     private Animator animator;
 
-    bool dashFlg;
+    BoxCollider AttackErea;
     private void Update()
     {
 
@@ -64,6 +65,23 @@ public class Player :CharaBase
             moveSpeed /= 1.5f;
             animator.SetBool("Dash",false);
         }
+        if(Input.GetKeyDown(KeyCode.Mouse0))
+        {
+        }
+    }
+
+    //コルーチン
+    IEnumerable Attack()
+    {
+        //攻撃
+        animator.SetBool("Attack", true);
+        AttackErea.enabled = true;
+        yield return null;
+
+        //攻撃終了
+        animator.SetBool("Attack", false);
+        AttackErea.enabled = false;
+        yield return null;
     }
 
 }

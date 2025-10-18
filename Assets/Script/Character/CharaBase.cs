@@ -51,10 +51,6 @@ public class CharaBase : MonoBehaviour
         RotateCharacter();
     }
 
-    protected void DashCharactor()
-    {
-        speed *= 1.5f;
-    }
     private void RotateCharacter()
     {
         if (moveDirection.sqrMagnitude > 0.01f)
