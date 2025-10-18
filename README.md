@@ -5,3 +5,9 @@
 
 プレイヤー
 https://quaternius.com/packs/ultimatedanimatedcharacter.html
+
+武器、アイテム
+https://quaternius.com/packs/ultimaterpg.html
+
+背景
+https://quaternius.com/packs/stylizednaturemegakit.html
