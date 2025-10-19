@@ -71,7 +71,10 @@ public class CharaBase : MonoBehaviour
         hp-=damage;
         if(hp <= 0) { Death(); }
     }
-
+    public void Heal(int healPoint)
+    {
+        hp += healPoint;
+    }
     private void Death()
     {
         this.gameObject.SetActive(false);
