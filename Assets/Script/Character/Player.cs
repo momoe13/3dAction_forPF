@@ -10,18 +10,39 @@ public class Player :CharaBase
     [SerializeField]
     private Animator animator;
 
+
+    [Header("近距離攻撃範囲")]
+    [SerializeField]
     BoxCollider AttackErea;
+    bool attackFlg;
+
+    bool deathFlg;
+
+    int MaxHP;
+    private void Start()
+    {
+        AttackErea.enabled = false;
+        MaxHP = hp;
+    }
     private void Update()
     {
-
-        GroundCheck();
-        HandleInput();
+        //復活
+        if (deathFlg)
+        {
+            if (Input.GetKeyDown(KeyCode.Return)) StateReset();
+        }
+        else
+        {
+            GroundCheck();
+            HandleInput();
+        }
     }
 
 
-
+    //TODO:アニメーション遷移フラグをキャラクターベースに移す
     private void HandleInput()
     {
+        if (attackFlg) return;
         float h = Input.GetAxisRaw("Horizontal"); // A,Dキー
         float v = Input.GetAxisRaw("Vertical");   // W,Sキー
 
@@ -55,6 +76,7 @@ public class Player :CharaBase
                 Jump();
         }
 
+        //TODO:加速、減速処理　整える
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             moveSpeed *= 1.5f;
@@ -67,21 +89,39 @@ public class Player :CharaBase
         }
         if(Input.GetKeyDown(KeyCode.Mouse0))
         {
+            attackFlg = true;
+            StartCoroutine(Attack());
+        }
+        //TODO:CharaBaseに引っ越し
+        if (Input.GetKeyDown(KeyCode.K)) { 
+            animator.SetBool("Death", true);
+            deathFlg = true;
         }
     }
 
-    //コルーチン
-    IEnumerable Attack()
+
+    //攻撃範囲有効化コルーチン
+    private IEnumerator Attack()
     {
         //攻撃
         animator.SetBool("Attack", true);
-        AttackErea.enabled = true;
-        yield return null;
+        AttackErea.enabled = attackFlg;
+        yield return new WaitForSeconds(0.7f);
 
         //攻撃終了
+        attackFlg = false;
         animator.SetBool("Attack", false);
-        AttackErea.enabled = false;
+        AttackErea.enabled = attackFlg;
+
         yield return null;
     }
 
+    //復活用初期化処理
+    private void StateReset()
+    {
+        hp = MaxHP;
+        deathFlg= false;
+        animator.SetBool("Death", false);
+        animator.Play("CharacterArmature|Idle");
+    }
 }

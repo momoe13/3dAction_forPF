@@ -19,6 +19,7 @@ public class CharaBase : MonoBehaviour
     public Transform groundCheck;   // 足元チェック用
     public float groundRadius = 0.3f;
 
+    [SerializeField]protected int hp;
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -26,15 +27,15 @@ public class CharaBase : MonoBehaviour
     }
 
 
-
+    //接地判定
     protected void GroundCheck()
     {
         if (groundCheck != null)
         {
             isGrounded = Physics.CheckSphere(groundCheck.position, groundRadius);
         }
-        Debug.Log(isGrounded);
     }
+    //ジャンプ処理
     protected void Jump()
     {
         if (isGrounded)
@@ -42,6 +43,8 @@ public class CharaBase : MonoBehaviour
             rb.AddForce(Vector3.up * 5f, ForceMode.Impulse);
         }
     }
+
+    //前後左右移動
     protected void MoveCharacter()
     {
         // moveDirectionは派生クラスで設定される（入力 or AIなど）
@@ -51,6 +54,7 @@ public class CharaBase : MonoBehaviour
         RotateCharacter();
     }
 
+    //回転
     private void RotateCharacter()
     {
         if (moveDirection.sqrMagnitude > 0.01f)
@@ -60,5 +64,17 @@ public class CharaBase : MonoBehaviour
         }
     }
 
+    //被ダメージ処理
+    //TODO:ダメージ時赤く点滅する
+    public void Damage(int damage)
+    {
+        hp-=damage;
+        if(hp <= 0) { Death(); }
+    }
 
+    private void Death()
+    {
+        this.gameObject.SetActive(false);
+
+    }
 }
