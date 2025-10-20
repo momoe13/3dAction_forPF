@@ -11,3 +11,6 @@ https://quaternius.com/packs/ultimaterpg.html
 
 背景
 https://quaternius.com/packs/stylizednaturemegakit.html
+
+動物
+https://quaternius.com/packs/ultimateanimatedanimals.html
