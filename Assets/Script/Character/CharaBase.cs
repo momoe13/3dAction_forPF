@@ -20,6 +20,8 @@ public class CharaBase : MonoBehaviour
     public float groundRadius = 0.3f;
 
     [SerializeField]protected int hp;
+    protected bool invincibleFlg = false;
+
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -68,15 +70,18 @@ public class CharaBase : MonoBehaviour
     //TODO:ダメージ時赤く点滅する
     public void Damage(int damage)
     {
-        hp-=damage;
+        if(invincibleFlg)return;
+        hp -=damage;
         if(hp <= 0) { Death(); }
     }
     public void Heal(int healPoint)
     {
         hp += healPoint;
     }
-    private void Death()
+    protected void Death()
     {
+        //TODO:良い感じにしてこのif文消す
+        if(this.gameObject.name=="Player")return;
         this.gameObject.SetActive(false);
 
     }

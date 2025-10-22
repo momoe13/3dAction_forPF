@@ -4,16 +4,19 @@ public class AttackErea : MonoBehaviour
 {
     [SerializeField]
     int damage;
-    BoxCollider coll;
-    private void Start()
-    {
-        coll=GetComponent<BoxCollider>();
-    }
+
 
     private void OnTriggerEnter(Collider collision)
     {
-        if (collision.gameObject.TryGetComponent<CharaBase>(out var chara))
+        //TODO:この状態だと子オブジェクトにあるスクリプトを取得することができない！
+
+        //if (collision.gameObject.TryGetComponent<CharaBase>(out var chara))
+        //{
+        //    chara.Damage(damage);
+        //}
+        if(collision.CompareTag("Player"))
         {
+            CharaBase chara = collision.GetComponentInParent<CharaBase>();
             chara.Damage(damage);
         }
     }

@@ -102,9 +102,13 @@ public class Player :CharaBase
 
     //攻撃範囲有効化コルーチン
     private IEnumerator Attack()
-    {
+    {   
         //攻撃
         animator.SetBool("Attack", true);
+        
+        //アニメーションに合わせて攻撃判定をさせるためちょっと待機
+        yield return new WaitForSeconds(0.2f);
+
         AttackErea.enabled = attackFlg;
         yield return new WaitForSeconds(0.7f);
 
