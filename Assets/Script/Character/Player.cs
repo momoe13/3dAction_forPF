@@ -7,14 +7,11 @@ public class Player :CharaBase
     [Header("Camera Reference")]
     public Transform cameraTransform;
 
-    [SerializeField]
-    private Animator animator;
 
 
     [Header("近距離攻撃範囲")]
     [SerializeField]
     BoxCollider AttackErea;
-    bool attackFlg;
 
     bool deathFlg;
 
@@ -42,7 +39,6 @@ public class Player :CharaBase
     //TODO:アニメーション遷移フラグをキャラクターベースに移す
     private void HandleInput()
     {
-        if (attackFlg) return;
         float h = Input.GetAxisRaw("Horizontal"); // A,Dキー
         float v = Input.GetAxisRaw("Vertical");   // W,Sキー
 
@@ -77,14 +73,25 @@ public class Player :CharaBase
         }
 
         //TODO:加速、減速処理　整える
+
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            moveSpeed *= 1.5f;
+            if (moveSpeed > maxSpeed) 
+            { 
+                moveSpeed=maxSpeed;
+                return;
+            }
+            moveSpeed += 0.25f;
             animator.SetBool("Dash", true);
         }
         else if (Input.GetKeyUp(KeyCode.LeftShift))
         {
-            moveSpeed /= 1.5f;
+            if (moveSpeed < maxSpeed / 3f)
+            {
+                moveSpeed = maxSpeed/3f;
+                return;
+            }
+            moveSpeed -= 0.25f;
             animator.SetBool("Dash",false);
         }
         if(Input.GetKeyDown(KeyCode.Mouse0))

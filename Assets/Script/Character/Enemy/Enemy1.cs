@@ -26,12 +26,17 @@ public class Enemy1 : CharaBase
             StartCoroutine(Attack());
             attackSpawnTimer = 0;
         }
-
-        if (pl_Pos != null&&followArea.SetFlg()) { 
+        //プレイヤーを発見したら追いかける
+        if (followArea.SetFlg()) {
+         animator.SetBool("Move", true);
          Vector3 dir=(pl_Pos.position - transform.position).normalized;
          moveDirection = dir.normalized;
          MoveCharacter();
 
+        }
+        else
+        {
+            animator.SetBool("Move", false);
         }
     }
 
@@ -39,10 +44,12 @@ public class Enemy1 : CharaBase
     private IEnumerator Attack()
     {
         //攻撃
+        animator.SetBool("Attack", true);
         AttackErea.enabled = true;
         yield return new WaitForSeconds(0.7f);
 
         //攻撃終了
+        animator.SetBool("Attack", false);
         AttackErea.enabled = false;
 
         yield return null;
