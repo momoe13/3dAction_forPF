@@ -1116,7 +1116,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
-  maxSpeed: 0
+  maxSpeed: 15
   rotationSpeed: 10
   groundCheck: {fileID: 989997227}
   groundRadius: 0.3

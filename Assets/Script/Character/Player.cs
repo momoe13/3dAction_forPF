@@ -64,6 +64,12 @@ public class Player :CharaBase
 
             animator.SetBool("Move", false);
         }
+        //ダッシュ処理
+        //三項演算子（シフトが押されてたらtargetSpeedは最大速度に、押してないなら通常速度に。）
+        float targetSpeed = Input.GetKey(KeyCode.LeftShift) ? maxSpeed : maxSpeed / 3f;
+       
+        moveSpeed = Mathf.Lerp(moveSpeed, targetSpeed, Time.deltaTime*5);
+        animator.SetBool("Dash", Input.GetKey(KeyCode.LeftShift));
 
         MoveCharacter();
         
@@ -74,26 +80,7 @@ public class Player :CharaBase
 
         //TODO:加速、減速処理　整える
 
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            if (moveSpeed > maxSpeed) 
-            { 
-                moveSpeed=maxSpeed;
-                return;
-            }
-            moveSpeed += 0.25f;
-            animator.SetBool("Dash", true);
-        }
-        else if (Input.GetKeyUp(KeyCode.LeftShift))
-        {
-            if (moveSpeed < maxSpeed / 3f)
-            {
-                moveSpeed = maxSpeed/3f;
-                return;
-            }
-            moveSpeed -= 0.25f;
-            animator.SetBool("Dash",false);
-        }
+       
         if(Input.GetKeyDown(KeyCode.Mouse0))
         {
             attackFlg = true;

@@ -7,10 +7,9 @@ public class CharaBase : MonoBehaviour
 
 
     [Header("移動処理")]
-    [SerializeField]
+
     protected float moveSpeed = 5f;
-    [SerializeField]
-    protected float maxSpeed;
+    protected float maxSpeed=10;
 
     public float rotationSpeed = 10f;
 
@@ -32,7 +31,7 @@ public class CharaBase : MonoBehaviour
 
     protected virtual void Awake()
     {
-        maxSpeed = moveSpeed * 3f;
+       // maxSpeed = moveSpeed * 3f;
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true; // 回転はスクリプトで制御する
     }
@@ -60,15 +59,12 @@ public class CharaBase : MonoBehaviour
     {
 
         if (attackFlg) return;
-        // moveDirectionは派生クラスで設定される（入力 or AIなど）
+        // moveDirectionは派生クラスで設定される（入力 or AI）
         Vector3 velocity = moveDirection * moveSpeed;
         velocity.y = rb.linearVelocity.y; // 重力はRigidbodyに任せる
         rb.linearVelocity = velocity;
 
-
-        // ← ここにデバッグログ
-        Debug.Log($"[MoveCharacter] moveSpeed:{moveSpeed:F2}, velocity:{rb.linearVelocity.magnitude:F2}");
-
+       //Debug.Log($"[MoveCharacter] moveSpeed:{moveSpeed:F2}, velocity:{rb.linearVelocity.magnitude:F2}");
 
         RotateCharacter();
     }
