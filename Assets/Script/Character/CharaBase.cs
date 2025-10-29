@@ -11,15 +11,15 @@ public class CharaBase : MonoBehaviour
     protected float moveSpeed = 5f;
     protected float maxSpeed=10;
 
-    public float rotationSpeed = 10f;
+    private float rotationSpeed = 10f;
 
     protected Rigidbody rb;
     protected Vector3 moveDirection;// 現在入力またはAIが指定した移動方向
     protected bool isGrounded;         // 地面に接地しているか
 
     [Header("設地判定")]
-    public Transform groundCheck;   // 足元チェック用
-    public float groundRadius = 0.3f;
+    private Transform groundCheck;   // 足元チェック用
+    private float groundRadius = 0.3f;
 
     [SerializeField]protected int hp;
     protected bool invincibleFlg = false;

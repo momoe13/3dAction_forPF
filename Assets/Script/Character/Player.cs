@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player :CharaBase
 {
     [Header("Camera Reference")]
-    public Transform cameraTransform;
+    private Transform cameraTransform;
 
 
 
@@ -77,18 +77,15 @@ public class Player :CharaBase
         {
                 Jump();
         }
-
-        //TODO:加速、減速処理　整える
-
        
         if(Input.GetKeyDown(KeyCode.Mouse0))
         {
             attackFlg = true;
             StartCoroutine(Attack());
         }
-        //TODO:CharaBaseに引っ越し
-        if (Input.GetKeyDown(KeyCode.K)) { 
-            
+        //デバッグ用死亡
+        if (Input.GetKeyDown(KeyCode.K)) {
+            Damage(50);
         }
     }
 
