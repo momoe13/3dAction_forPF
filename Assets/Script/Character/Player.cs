@@ -7,14 +7,11 @@ public class Player :CharaBase
     [Header("Camera Reference")]
     public Transform cameraTransform;
 
-    [SerializeField]
-    private Animator animator;
 
 
     [Header("近距離攻撃範囲")]
     [SerializeField]
     BoxCollider AttackErea;
-    bool attackFlg;
 
     bool deathFlg;
 
@@ -42,7 +39,6 @@ public class Player :CharaBase
     //TODO:アニメーション遷移フラグをキャラクターベースに移す
     private void HandleInput()
     {
-        if (attackFlg) return;
         float h = Input.GetAxisRaw("Horizontal"); // A,Dキー
         float v = Input.GetAxisRaw("Vertical");   // W,Sキー
 
@@ -68,6 +64,12 @@ public class Player :CharaBase
 
             animator.SetBool("Move", false);
         }
+        //ダッシュ処理
+        //三項演算子（シフトが押されてたらtargetSpeedは最大速度に、押してないなら通常速度に。）
+        float targetSpeed = Input.GetKey(KeyCode.LeftShift) ? maxSpeed : maxSpeed / 3f;
+       
+        moveSpeed = Mathf.Lerp(moveSpeed, targetSpeed, Time.deltaTime*5);
+        animator.SetBool("Dash", Input.GetKey(KeyCode.LeftShift));
 
         MoveCharacter();
         
@@ -77,16 +79,8 @@ public class Player :CharaBase
         }
 
         //TODO:加速、減速処理　整える
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            moveSpeed *= 1.5f;
-            animator.SetBool("Dash", true);
-        }
-        else if (Input.GetKeyUp(KeyCode.LeftShift))
-        {
-            moveSpeed /= 1.5f;
-            animator.SetBool("Dash",false);
-        }
+
+       
         if(Input.GetKeyDown(KeyCode.Mouse0))
         {
             attackFlg = true;
@@ -94,17 +88,20 @@ public class Player :CharaBase
         }
         //TODO:CharaBaseに引っ越し
         if (Input.GetKeyDown(KeyCode.K)) { 
-            animator.SetBool("Death", true);
-            deathFlg = true;
+            
         }
     }
 
 
     //攻撃範囲有効化コルーチン
     private IEnumerator Attack()
-    {
+    {   
         //攻撃
         animator.SetBool("Attack", true);
+        
+        //アニメーションに合わせて攻撃判定をさせるためちょっと待機
+        yield return new WaitForSeconds(0.2f);
+
         AttackErea.enabled = attackFlg;
         yield return new WaitForSeconds(0.7f);
 
@@ -123,5 +120,19 @@ public class Player :CharaBase
         deathFlg= false;
         animator.SetBool("Death", false);
         animator.Play("CharacterArmature|Idle");
+    }
+    
+    protected override void Death()
+    {
+        animator.SetBool("Death", true);
+        deathFlg = true;
+    }
+
+    public Vector2 SetHP()
+    {
+        Vector2 plHp;
+        plHp.x = hp;
+        plHp.y = MaxHP;
+        return plHp;
     }
 }

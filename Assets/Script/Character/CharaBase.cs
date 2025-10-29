@@ -4,11 +4,13 @@ public class CharaBase : MonoBehaviour
 {
     protected bool moveFlg;
     protected float moveAngle;
-    [SerializeField]
-    float speed = 2.0f;
+
 
     [Header("移動処理")]
-    public float moveSpeed = 5f;
+
+    protected float moveSpeed = 5f;
+    protected float maxSpeed=10;
+
     public float rotationSpeed = 10f;
 
     protected Rigidbody rb;
@@ -20,8 +22,16 @@ public class CharaBase : MonoBehaviour
     public float groundRadius = 0.3f;
 
     [SerializeField]protected int hp;
+    protected bool invincibleFlg = false;
+
+    [SerializeField]
+    protected Animator animator;
+
+    protected bool attackFlg;
+
     protected virtual void Awake()
     {
+       // maxSpeed = moveSpeed * 3f;
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true; // 回転はスクリプトで制御する
     }
@@ -47,12 +57,18 @@ public class CharaBase : MonoBehaviour
     //前後左右移動
     protected void MoveCharacter()
     {
-        // moveDirectionは派生クラスで設定される（入力 or AIなど）
+
+        if (attackFlg) return;
+        // moveDirectionは派生クラスで設定される（入力 or AI）
         Vector3 velocity = moveDirection * moveSpeed;
         velocity.y = rb.linearVelocity.y; // 重力はRigidbodyに任せる
         rb.linearVelocity = velocity;
+
+       //Debug.Log($"[MoveCharacter] moveSpeed:{moveSpeed:F2}, velocity:{rb.linearVelocity.magnitude:F2}");
+
         RotateCharacter();
     }
+
 
     //回転
     private void RotateCharacter()
@@ -68,15 +84,19 @@ public class CharaBase : MonoBehaviour
     //TODO:ダメージ時赤く点滅する
     public void Damage(int damage)
     {
-        hp-=damage;
+        if(invincibleFlg)return;
+        hp -=damage;
         if(hp <= 0) { Death(); }
     }
     public void Heal(int healPoint)
     {
         hp += healPoint;
     }
-    private void Death()
+
+    protected virtual void Death()
     {
+        //TODO:良い感じにしてこのif文消す
+        if(this.gameObject.name=="Player")return;
         this.gameObject.SetActive(false);
 
     }
