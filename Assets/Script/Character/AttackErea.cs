@@ -8,13 +8,7 @@ public class AttackErea : MonoBehaviour
 
     private void OnTriggerEnter(Collider collision)
     {
-        //TODO:この状態だと子オブジェクトにあるスクリプトを取得することができない！
-
-        //if (collision.gameObject.TryGetComponent<CharaBase>(out var chara))
-        //{
-        //    chara.Damage(damage);
-        //}
-        if(collision.CompareTag("Player"))
+        if(collision.CompareTag("Target"))
         {
             CharaBase chara = collision.GetComponentInParent<CharaBase>();
             chara.Damage(damage);

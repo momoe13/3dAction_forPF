@@ -92,7 +92,8 @@ public class CharaBase : MonoBehaviour
     {
         hp += healPoint;
     }
-    protected void Death()
+
+    protected virtual void Death()
     {
         //TODO:ó«Ç¢ä¥Ç∂Ç…ÇµÇƒÇ±ÇÃifï∂è¡Ç∑
         if(this.gameObject.name=="Player")return;

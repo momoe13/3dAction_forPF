@@ -88,8 +88,7 @@ public class Player :CharaBase
         }
         //TODO:CharaBase‚Éˆø‚Á‰z‚µ
         if (Input.GetKeyDown(KeyCode.K)) { 
-            animator.SetBool("Death", true);
-            deathFlg = true;
+            
         }
     }
 
@@ -121,5 +120,19 @@ public class Player :CharaBase
         deathFlg= false;
         animator.SetBool("Death", false);
         animator.Play("CharacterArmature|Idle");
+    }
+    
+    protected override void Death()
+    {
+        animator.SetBool("Death", true);
+        deathFlg = true;
+    }
+
+    public Vector2 SetHP()
+    {
+        Vector2 plHp;
+        plHp.x = hp;
+        plHp.y = MaxHP;
+        return plHp;
     }
 }
