@@ -91,13 +91,7 @@ public class Player :CharaBase
         if (Input.GetKeyDown(KeyCode.K)) { 
             
         }
-        //マウスカーソルで左右視点移動
-        float mx = Input.GetAxis("Mouse X");//カーソルの横の移動量を取得
-        if (Mathf.Abs(mx) > 0.001f) // X方向に一定量移動していれば横回転
-        {
-            transform.RotateAround(transform.position, Vector3.up, mx); // 回転軸はplayerオブジェクトのワールド座標Y軸
 
-        }
     }
 
 
