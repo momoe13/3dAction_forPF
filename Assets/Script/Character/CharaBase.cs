@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class CharaBase : MonoBehaviour
@@ -11,18 +12,25 @@ public class CharaBase : MonoBehaviour
     protected float moveSpeed = 5f;
     protected float maxSpeed=10;
 
-    public float rotationSpeed = 10f;
+    [SerializeField]
+    private float rotationSpeed = 10f;
+
+    [SerializeField]
+    float knockbackPower;//ノックバック
+    bool knockbackFlg;
+    float knockbackTime = 0.2f;
+
 
     protected Rigidbody rb;
     protected Vector3 moveDirection;// 現在入力またはAIが指定した移動方向
-    protected bool isGrounded;         // 地面に接地しているか
 
     [Header("設地判定")]
+    protected bool isGrounded;         // 地面に接地しているか
     public Transform groundCheck;   // 足元チェック用
     public float groundRadius = 0.3f;
 
     [SerializeField]protected int hp;
-    protected bool invincibleFlg = false;
+    protected bool invincibleFlg = false;//存在フラグ　死亡したらtrue
 
     [SerializeField]
     protected Animator animator;
@@ -58,7 +66,7 @@ public class CharaBase : MonoBehaviour
     protected void MoveCharacter()
     {
 
-        if (attackFlg) return;
+        if (attackFlg||knockbackFlg) return;
         // moveDirectionは派生クラスで設定される（入力 or AI）
         Vector3 velocity = moveDirection * moveSpeed;
         velocity.y = rb.linearVelocity.y; // 重力はRigidbodyに任せる
@@ -82,13 +90,27 @@ public class CharaBase : MonoBehaviour
 
     //被ダメージ処理
     //TODO:ダメージ時赤く点滅する
-    //TODO:攻撃方向を受け取り、その方向に下がる
-    public void Damage(int damage)
+    public void Damage(int damage ,Vector3 hitPos)
     {
         if(invincibleFlg)return;
-        hp -=damage;
+
+
+        //攻撃方向を受け取り、その方向に下がる
+        //TODO:PLがダメージを受けたとき、Eneが下がる
+        Vector3 hitVec = (this.transform.position - hitPos).normalized;
+
+        Debug.Log(hitVec+"受けたキャラ:"+gameObject.name);
+        hitVec.y= rb.linearVelocity.y;
+        this.transform.position += hitVec*knockbackPower;
+        //rb.AddForce(hitVec * knockbackPower, ForceMode.Impulse);
+
+        StartCoroutine(KnockbackRoutine(hitVec));
+
+        hp -= damage;
         if(hp <= 0) { Death(); }
     }
+
+
     public void Heal(int healPoint)
     {
         hp += healPoint;
@@ -100,6 +122,13 @@ public class CharaBase : MonoBehaviour
         //TODO:良い感じにしてこのif文消す
         if(this.gameObject.name=="Player")return;
         this.gameObject.SetActive(false);
+    }
 
+    private IEnumerator KnockbackRoutine(Vector3 dir)
+    {
+        knockbackFlg = true;
+        rb.linearVelocity = dir * knockbackPower;
+        yield return new WaitForSeconds(knockbackTime);
+        knockbackFlg = false;
     }
 }
