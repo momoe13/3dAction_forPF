@@ -15,8 +15,7 @@ public class CharaBase : MonoBehaviour
     [SerializeField]
     private float rotationSpeed = 10f;
 
-    [SerializeField]
-    float knockbackPower;//ノックバック
+
     bool knockbackFlg;
     float knockbackTime = 0.2f;
 
@@ -90,7 +89,7 @@ public class CharaBase : MonoBehaviour
 
     //被ダメージ処理
     //TODO:ダメージ時赤く点滅する
-    public void Damage(int damage ,Vector3 hitPos)
+    public void Damage(int damage ,Vector3 hitPos,float knockbackPower)
     {
         if(invincibleFlg)return;
 
@@ -104,7 +103,7 @@ public class CharaBase : MonoBehaviour
         this.transform.position += hitVec*knockbackPower;
         //rb.AddForce(hitVec * knockbackPower, ForceMode.Impulse);
 
-        StartCoroutine(KnockbackRoutine(hitVec));
+        //StartCoroutine(KnockbackRoutine(hitVec));
 
         hp -= damage;
         if(hp <= 0) { Death(); }
@@ -124,11 +123,11 @@ public class CharaBase : MonoBehaviour
         this.gameObject.SetActive(false);
     }
 
-    private IEnumerator KnockbackRoutine(Vector3 dir)
-    {
-        knockbackFlg = true;
-        rb.linearVelocity = dir * knockbackPower;
-        yield return new WaitForSeconds(knockbackTime);
-        knockbackFlg = false;
-    }
+    //private IEnumerator KnockbackRoutine(Vector3 dir)
+    //{
+    //    knockbackFlg = true;
+    //    rb.linearVelocity = dir * knockbackPower;
+    //    yield return new WaitForSeconds(knockbackTime);
+    //    knockbackFlg = false;
+    //}
 }
