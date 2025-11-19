@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class CharaBase : MonoBehaviour
@@ -6,23 +7,29 @@ public class CharaBase : MonoBehaviour
     protected float moveAngle;
 
 
-    [Header("ˆÚ“®ˆ—")]
+    [Header("ç§»å‹•å‡¦ç†")]
 
     protected float moveSpeed = 5f;
     protected float maxSpeed=10;
 
-    public float rotationSpeed = 10f;
+    [SerializeField]
+    private float rotationSpeed = 10f;
+
+
+    bool knockbackFlg;
+    float knockbackTime = 0.2f;
+
 
     protected Rigidbody rb;
-    protected Vector3 moveDirection;// Œ»İ“ü—Í‚Ü‚½‚ÍAI‚ªw’è‚µ‚½ˆÚ“®•ûŒü
-    protected bool isGrounded;         // ’n–Ê‚ÉÚ’n‚µ‚Ä‚¢‚é‚©
+    protected Vector3 moveDirection;// ç¾åœ¨å…¥åŠ›ã¾ãŸã¯AIãŒæŒ‡å®šã—ãŸç§»å‹•æ–¹å‘
 
-    [Header("İ’n”»’è")]
-    public Transform groundCheck;   // ‘«Œ³ƒ`ƒFƒbƒN—p
+    [Header("è¨­åœ°åˆ¤å®š")]
+    protected bool isGrounded;         // åœ°é¢ã«æ¥åœ°ã—ã¦ã„ã‚‹ã‹
+    public Transform groundCheck;   // è¶³å…ƒãƒã‚§ãƒƒã‚¯ç”¨
     public float groundRadius = 0.3f;
 
     [SerializeField]protected int hp;
-    protected bool invincibleFlg = false;
+    protected bool invincibleFlg = false;//å­˜åœ¨ãƒ•ãƒ©ã‚°ã€€æ­»äº¡ã—ãŸã‚‰true
 
     [SerializeField]
     protected Animator animator;
@@ -33,11 +40,11 @@ public class CharaBase : MonoBehaviour
     {
        // maxSpeed = moveSpeed * 3f;
         rb = GetComponent<Rigidbody>();
-        rb.freezeRotation = true; // ‰ñ“]‚ÍƒXƒNƒŠƒvƒg‚Å§Œä‚·‚é
+        rb.freezeRotation = true; // å›è»¢ã¯ã‚¹ã‚¯ãƒªãƒ—ãƒˆã§åˆ¶å¾¡ã™ã‚‹
     }
 
 
-    //Ú’n”»’è
+    //æ¥åœ°åˆ¤å®š
     protected void GroundCheck()
     {
         if (groundCheck != null)
@@ -45,7 +52,7 @@ public class CharaBase : MonoBehaviour
             isGrounded = Physics.CheckSphere(groundCheck.position, groundRadius);
         }
     }
-    //ƒWƒƒƒ“ƒvˆ—
+    //ã‚¸ãƒ£ãƒ³ãƒ—å‡¦ç†
     protected void Jump()
     {
         if (isGrounded)
@@ -54,14 +61,14 @@ public class CharaBase : MonoBehaviour
         }
     }
 
-    //‘OŒã¶‰EˆÚ“®
+    //å‰å¾Œå·¦å³ç§»å‹•
     protected void MoveCharacter()
     {
 
-        if (attackFlg) return;
-        // moveDirection‚Í”h¶ƒNƒ‰ƒX‚Åİ’è‚³‚ê‚éi“ü—Í or AIj
+        if (attackFlg||knockbackFlg) return;
+        // moveDirectionã¯æ´¾ç”Ÿã‚¯ãƒ©ã‚¹ã§è¨­å®šã•ã‚Œã‚‹ï¼ˆå…¥åŠ› or AIï¼‰
         Vector3 velocity = moveDirection * moveSpeed;
-        velocity.y = rb.linearVelocity.y; // d—Í‚ÍRigidbody‚É”C‚¹‚é
+        velocity.y = rb.linearVelocity.y; // é‡åŠ›ã¯Rigidbodyã«ä»»ã›ã‚‹
         rb.linearVelocity = velocity;
 
        //Debug.Log($"[MoveCharacter] moveSpeed:{moveSpeed:F2}, velocity:{rb.linearVelocity.magnitude:F2}");
@@ -70,7 +77,7 @@ public class CharaBase : MonoBehaviour
     }
 
 
-    //‰ñ“]
+    //å›è»¢
     private void RotateCharacter()
     {
         if (moveDirection.sqrMagnitude > 0.01f)
@@ -80,24 +87,47 @@ public class CharaBase : MonoBehaviour
         }
     }
 
-    //”íƒ_ƒ[ƒWˆ—
-    //TODO:ƒ_ƒ[ƒWÔ‚­“_–Å‚·‚é
-    public void Damage(int damage)
+    //è¢«ãƒ€ãƒ¡ãƒ¼ã‚¸å‡¦ç†
+    //TODO:ãƒ€ãƒ¡ãƒ¼ã‚¸æ™‚èµ¤ãç‚¹æ»…ã™ã‚‹
+    public void Damage(int damage ,Vector3 hitPos,float knockbackPower)
     {
         if(invincibleFlg)return;
-        hp -=damage;
+
+
+        //æ”»æ’ƒæ–¹å‘ã‚’å—ã‘å–ã‚Šã€ãã®æ–¹å‘ã«ä¸‹ãŒã‚‹
+        //TODO:PLãŒãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’å—ã‘ãŸã¨ãã€EneãŒä¸‹ãŒã‚‹
+        Vector3 hitVec = (this.transform.position - hitPos).normalized;
+
+        Debug.Log(hitVec+"å—ã‘ãŸã‚­ãƒ£ãƒ©:"+gameObject.name);
+        hitVec.y= rb.linearVelocity.y;
+        this.transform.position += hitVec*knockbackPower;
+        //rb.AddForce(hitVec * knockbackPower, ForceMode.Impulse);
+
+        //StartCoroutine(KnockbackRoutine(hitVec));
+
+        hp -= damage;
         if(hp <= 0) { Death(); }
     }
+
+
     public void Heal(int healPoint)
     {
         hp += healPoint;
     }
 
+
     protected virtual void Death()
     {
-        //TODO:—Ç‚¢Š´‚¶‚É‚µ‚Ä‚±‚Ìif•¶Á‚·
+        //TODO:è‰¯ã„æ„Ÿã˜ã«ã—ã¦ã“ã®ifæ–‡æ¶ˆã™
         if(this.gameObject.name=="Player")return;
         this.gameObject.SetActive(false);
-
     }
+
+    //private IEnumerator KnockbackRoutine(Vector3 dir)
+    //{
+    //    knockbackFlg = true;
+    //    rb.linearVelocity = dir * knockbackPower;
+    //    yield return new WaitForSeconds(knockbackTime);
+    //    knockbackFlg = false;
+    //}
 }

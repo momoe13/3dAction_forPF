@@ -6,7 +6,7 @@ public class FollowArea : MonoBehaviour
     bool GetPlayr= false;
     private void OnTriggerEnter(Collider collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Target"))
         {
             GetPlayr = true;
         }
