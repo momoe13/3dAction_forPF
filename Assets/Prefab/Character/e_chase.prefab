@@ -83,7 +83,7 @@ MonoBehaviour:
   rotationSpeed: 10
   groundCheck: {fileID: 693291425943782320}
   groundRadius: 0.3
-  hp: 20
+  hp: 10
   animator: {fileID: 6420134194774320326}
   pl_Pos: {fileID: 0}
   followArea: {fileID: 1079590718343924344}
@@ -114,7 +114,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 84
   m_CollisionDetection: 0
 --- !u!1001 &1050945212549422943
 PrefabInstance:
@@ -292,7 +292,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6484091949937430548, guid: 3e1dfcd0c9e84b54492b27fc5f994f20, type: 3}
       propertyPath: knockbackPower
-      value: 30
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7377094939317690165, guid: 3e1dfcd0c9e84b54492b27fc5f994f20, type: 3}
       propertyPath: m_Name

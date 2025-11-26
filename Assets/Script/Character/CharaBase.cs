@@ -8,9 +8,11 @@ public class CharaBase : MonoBehaviour
 
 
     [Header("移動処理")]
-
     protected float moveSpeed = 5f;
     protected float maxSpeed=10;
+
+    [Header("ジャンプ")]
+    [SerializeField] float jumpPower;
 
     [SerializeField]
     private float rotationSpeed = 10f;
@@ -57,7 +59,7 @@ public class CharaBase : MonoBehaviour
     {
         if (isGrounded)
         {
-            rb.AddForce(Vector3.up * 5f, ForceMode.Impulse);
+            rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
         }
     }
 
@@ -66,13 +68,12 @@ public class CharaBase : MonoBehaviour
     {
 
         if (attackFlg||knockbackFlg) return;
+
+        Debug.Log("歩いてる"+this.gameObject.name);
         // moveDirectionは派生クラスで設定される（入力 or AI）
         Vector3 velocity = moveDirection * moveSpeed;
         velocity.y = rb.linearVelocity.y; // 重力はRigidbodyに任せる
         rb.linearVelocity = velocity;
-
-       //Debug.Log($"[MoveCharacter] moveSpeed:{moveSpeed:F2}, velocity:{rb.linearVelocity.magnitude:F2}");
-
         RotateCharacter();
     }
 
@@ -95,15 +96,13 @@ public class CharaBase : MonoBehaviour
 
 
         //攻撃方向を受け取り、その方向に下がる
-        //TODO:PLがダメージを受けたとき、Eneが下がる
         Vector3 hitVec = (this.transform.position - hitPos).normalized;
 
-        Debug.Log(hitVec+"受けたキャラ:"+gameObject.name);
+        //Debug.Log(hitVec+"受けたキャラ:"+gameObject.name);
         hitVec.y= rb.linearVelocity.y;
         this.transform.position += hitVec*knockbackPower;
         //rb.AddForce(hitVec * knockbackPower, ForceMode.Impulse);
 
-        //StartCoroutine(KnockbackRoutine(hitVec));
 
         hp -= damage;
         if(hp <= 0) { Death(); }
@@ -123,11 +122,4 @@ public class CharaBase : MonoBehaviour
         this.gameObject.SetActive(false);
     }
 
-    //private IEnumerator KnockbackRoutine(Vector3 dir)
-    //{
-    //    knockbackFlg = true;
-    //    rb.linearVelocity = dir * knockbackPower;
-    //    yield return new WaitForSeconds(knockbackTime);
-    //    knockbackFlg = false;
-    //}
 }

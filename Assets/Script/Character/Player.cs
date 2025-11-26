@@ -73,12 +73,10 @@ public class Player :CharaBase
 
         MoveCharacter();
         
-        if(Input.GetButtonDown("Jump"))
+        if(Input.GetKeyDown(KeyCode.Space))
         {
                 Jump();
         }
-
-        //TODO:加速、減速処理　整える
 
        
         if(Input.GetKeyDown(KeyCode.Mouse0))
