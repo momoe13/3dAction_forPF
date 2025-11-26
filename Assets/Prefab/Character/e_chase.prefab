@@ -80,6 +80,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb7e1dfbca22d654ea388ceeacfb7f9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  jumpPower: 0
   rotationSpeed: 10
   groundCheck: {fileID: 693291425943782320}
   groundRadius: 0.3
@@ -208,9 +209,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
-  m_Height: 3.536411
+  m_Height: 2.987912
   m_Direction: 1
-  m_Center: {x: 0, y: 1.2682055, z: 0}
+  m_Center: {x: 0, y: 1.5424551, z: 0}
 --- !u!95 &6420134194774320326
 Animator:
   serializedVersion: 7
