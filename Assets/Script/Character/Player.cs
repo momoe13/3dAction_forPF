@@ -64,7 +64,7 @@ public class Player :CharaBase
 
             animator.SetBool("Move", false);
         }
-        //ダッシュ処理
+        //---ダッシュ処理------
         //三項演算子（シフトが押されてたらtargetSpeedは最大速度に、押してないなら通常速度に。）
         float targetSpeed = Input.GetKey(KeyCode.LeftShift) ? maxSpeed : maxSpeed / 3f;
        
@@ -81,8 +81,12 @@ public class Player :CharaBase
        
         if(Input.GetKeyDown(KeyCode.Mouse0))
         {
-            attackFlg = true;
+            //一歩踏み込む
+            Vector3 stepDir = transform.forward;
+            rb.linearVelocity = stepDir * moveSpeed;
             StartCoroutine(Attack());
+            attackFlg = true;
+
         }
         //TODO:CharaBaseに引っ越し
         //死亡処理

@@ -496,9 +496,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5792988016810950437, guid: d717ce5ce543fe149a1c3e0abdd2a1e2, type: 3}
+      propertyPath: rotationSpeed
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5792988016810950437, guid: d717ce5ce543fe149a1c3e0abdd2a1e2, type: 3}
       propertyPath: cameraTransform
       value: 
       objectReference: {fileID: 1002233640}
+    - target: {fileID: 6703373285921866417, guid: d717ce5ce543fe149a1c3e0abdd2a1e2, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1425,6 +1433,10 @@ PrefabInstance:
       propertyPath: pl_Pos
       value: 
       objectReference: {fileID: 1415527531}
+    - target: {fileID: 6985859162882958245, guid: 630180d574af43e45af172092229793f, type: 3}
+      propertyPath: knockbackPower
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

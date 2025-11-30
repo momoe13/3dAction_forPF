@@ -69,7 +69,6 @@ public class CharaBase : MonoBehaviour
 
         if (attackFlg||knockbackFlg) return;
 
-        Debug.Log("歩いてる"+this.gameObject.name);
         // moveDirectionは派生クラスで設定される（入力 or AI）
         Vector3 velocity = moveDirection * moveSpeed;
         velocity.y = rb.linearVelocity.y; // 重力はRigidbodyに任せる
