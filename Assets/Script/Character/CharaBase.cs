@@ -30,8 +30,10 @@ public class CharaBase : MonoBehaviour
     public Transform groundCheck;   // 足元チェック用
     public float groundRadius = 0.3f;
 
-    [SerializeField]protected int hp;
-    protected bool invincibleFlg = false;//存在フラグ　死亡したらtrue
+    [SerializeField]
+    protected int   hp;
+    bool            deathFlg;
+    protected bool  invincibleFlg = false;//存在フラグ　死亡したらtrue
 
     [SerializeField]
     protected Animator animator;

@@ -93,7 +93,14 @@ public class Player :CharaBase
         if (Input.GetKeyDown(KeyCode.K)) { 
             
         }
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            invincibleFlg = true;
 
+            Vector3 stepDir = transform.forward;
+            rb.linearVelocity = stepDir * 3.0f;
+            animator.SetBool("Roll", true);
+        }
     }
 
 
