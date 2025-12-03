@@ -32,7 +32,7 @@ public class CharaBase : MonoBehaviour
 
     [SerializeField]
     protected int   hp;
-    bool            deathFlg;
+    protected bool  deathFlg;
     protected bool  invincibleFlg = false;//存在フラグ　死亡したらtrue
 
     [SerializeField]
@@ -43,7 +43,7 @@ public class CharaBase : MonoBehaviour
     protected virtual void Awake()
     {
        // maxSpeed = moveSpeed * 3f;
-        rb = GetComponent<Rigidbody>();
+        rb = GetComponentInParent<Rigidbody>();
         rb.freezeRotation = true; // 回転はスクリプトで制御する
     }
 

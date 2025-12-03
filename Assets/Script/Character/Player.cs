@@ -4,18 +4,16 @@ using UnityEngine;
 
 public class Player :CharaBase
 {
-    [Header("Camera Reference")]
-    public Transform cameraTransform;
-
-
+    [Header("Camera参照")][SerializeField]
+    Transform cameraTransform;
 
     [Header("近距離攻撃範囲")]
     [SerializeField]
     BoxCollider AttackErea;
 
-    bool deathFlg;
-
+    
     int MaxHP;
+
     private void Start()
     {
         AttackErea.enabled = false;
@@ -93,10 +91,9 @@ public class Player :CharaBase
         if (Input.GetKeyDown(KeyCode.K)) { 
             
         }
-        if (Input.GetKeyDown(KeyCode.Mouse1))
+        if (Input.GetKeyDown(KeyCode.J))
         {
             invincibleFlg = true;
-
             Vector3 stepDir = transform.forward;
             rb.linearVelocity = stepDir * 3.0f;
             animator.SetBool("Roll", true);
@@ -145,5 +142,11 @@ public class Player :CharaBase
         plHp.x = hp;
         plHp.y = MaxHP;
         return plHp;
+    }
+
+    private void EndRoll()
+    {
+        animator.SetBool("Roll", false);
+        invincibleFlg = false;
     }
 }
