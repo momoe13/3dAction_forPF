@@ -75,7 +75,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4125168058080636186}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cb7e1dfbca22d654ea388ceeacfb7f9c, type: 3}
   m_Name: 
@@ -183,9 +183,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b4e41c89a356ba848bae7b656d1033be, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6420134194774320326}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b4e41c89a356ba848bae7b656d1033be, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1643147174436413191}
   m_SourcePrefab: {fileID: 100100000, guid: b4e41c89a356ba848bae7b656d1033be, type: 3}
 --- !u!1 &168001853448708622 stripped
 GameObject:
@@ -237,28 +234,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1643147174436413191
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 168001853448708622}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb7e1dfbca22d654ea388ceeacfb7f9c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  jumpPower: 0
-  rotationSpeed: 10
-  groundCheck: {fileID: 693291425943782320}
-  groundRadius: 0.3
-  hp: 10
-  animator: {fileID: 6420134194774320326}
-  pl_Pos: {fileID: 0}
-  followArea: {fileID: 1079590718343924344}
-  attackInterval: 0
-  AttackErea: {fileID: 4851913799708050943}
 --- !u!4 &657257708060850356 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b4e41c89a356ba848bae7b656d1033be, type: 3}

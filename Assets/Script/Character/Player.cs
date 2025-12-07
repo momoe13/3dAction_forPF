@@ -98,6 +98,18 @@ public class Player :CharaBase
             rb.linearVelocity = stepDir * 3.0f;
             animator.SetBool("Roll", true);
         }
+
+        //ローリング終了
+        if (invincibleFlg)
+        {
+            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
+            {
+                animator.SetBool("Roll", false);
+                invincibleFlg = false;
+
+            }
+        }
+
     }
 
 

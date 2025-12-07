@@ -43,7 +43,7 @@ public class CharaBase : MonoBehaviour
     protected virtual void Awake()
     {
        // maxSpeed = moveSpeed * 3f;
-        rb = GetComponentInParent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true; // 回転はスクリプトで制御する
     }
 
