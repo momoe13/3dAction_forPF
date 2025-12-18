@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Enemy1 : CharaBase
+public class Enemy1 : charabase
 {
     [SerializeField]
     Transform pl_Pos;

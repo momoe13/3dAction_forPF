@@ -9,7 +9,7 @@ public class AttackErea : MonoBehaviour
     {
         if(collision.CompareTag("Target"))
         {
-            CharaBase chara = collision.GetComponentInParent<CharaBase>();
+            charabase chara = collision.GetComponentInParent<charabase>();
 
             //ContactPoint contact = collision.GetContact(0);
             //ClosestPoint　指定された位置に最も近いコライダーのポイントを返す。

@@ -2,7 +2,7 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Player :CharaBase
+public class Player :charabase
 {
     [Header("Camera参照")][SerializeField]
     Transform cameraTransform;
