@@ -7,16 +7,17 @@ public class Player :CharaBase
     [Header("Camera参照")][SerializeField]
     Transform cameraTransform;
 
-    [Header("近距離攻撃範囲")]
-    [SerializeField]
-    BoxCollider AttackErea;
+
 
     
     int MaxHP;
 
     private void Start()
     {
-        AttackErea.enabled = false;
+        for (int i = 0; i < atkErea.Length; i++)
+        {
+            atkErea[i].enabled = false;
+        }
         MaxHP = hp;
     }
     private void Update()
@@ -30,6 +31,8 @@ public class Player :CharaBase
         {
             GroundCheck();
             HandleInput();
+
+            UpdateAttack();
         }
     }
 
@@ -39,6 +42,8 @@ public class Player :CharaBase
     {
         float h = Input.GetAxisRaw("Horizontal"); // A,Dキー
         float v = Input.GetAxisRaw("Vertical");   // W,Sキー
+
+        //Debug.Log(h+ " " + v);
 
         Vector3 inputDir = new Vector3(h, 0, v).normalized;
 
@@ -54,7 +59,7 @@ public class Player :CharaBase
             camRight.Normalize();
 
             moveDirection = (camForward * v + camRight * h).normalized;
-            animator.SetBool("Move", true);
+            if (!isAtk) { animator.SetBool("Move", true); }
         }
         else
         {
@@ -79,17 +84,11 @@ public class Player :CharaBase
        
         if(Input.GetKeyDown(KeyCode.Mouse0))
         {
-            //一歩踏み込む
-            Vector3 stepDir = transform.forward;
-            rb.linearVelocity = stepDir * moveSpeed;
-            StartCoroutine(Attack());
-            attackFlg = true;
-
-        }
-        //TODO:CharaBaseに引っ越し
-        //死亡処理
-        if (Input.GetKeyDown(KeyCode.K)) { 
-            
+            if (!isAtk) StartAttack();
+            else
+            {
+                nextAtk = true;
+            }
         }
         if (Input.GetKeyDown(KeyCode.J))
         {
@@ -112,26 +111,6 @@ public class Player :CharaBase
 
     }
 
-
-    //攻撃範囲有効化コルーチン
-    private IEnumerator Attack()
-    {   
-        //攻撃
-        animator.SetBool("Attack", true);
-        
-        //アニメーションに合わせて攻撃判定をさせるためちょっと待機
-        yield return new WaitForSeconds(0.2f);
-
-        AttackErea.enabled = attackFlg;
-        yield return new WaitForSeconds(0.7f);
-
-        //攻撃終了
-        attackFlg = false;
-        animator.SetBool("Attack", false);
-        AttackErea.enabled = attackFlg;
-
-        yield return null;
-    }
 
     //復活用初期化処理
     private void StateReset()

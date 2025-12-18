@@ -1,6 +1,14 @@
 using System.Collections;
 using UnityEngine;
 
+
+[System.Serializable]
+public class AttackData
+{
+    public string animName;
+    public float hitStart;
+    public float hitEnd;
+}
 public class CharaBase : MonoBehaviour
 {
     protected bool moveFlg;
@@ -19,7 +27,6 @@ public class CharaBase : MonoBehaviour
 
 
     bool knockbackFlg;
-    float knockbackTime = 0.2f;
 
 
     protected Rigidbody rb;
@@ -38,7 +45,23 @@ public class CharaBase : MonoBehaviour
     [SerializeField]
     protected Animator animator;
 
-    protected bool attackFlg;
+
+    //---攻撃関連----
+    //atk=attack
+    [Header("近距離攻撃範囲")]
+    [SerializeField]
+    protected BoxCollider[] atkErea;
+
+    [SerializeField] AttackData[] attacks;
+
+    int atkIndex = -1;
+    protected bool isAtk;
+    protected bool nextAtk;
+    float atkTimer;
+
+
+
+    private string currentStateName;
 
     protected virtual void Awake()
     {
@@ -69,7 +92,7 @@ public class CharaBase : MonoBehaviour
     protected void MoveCharacter()
     {
 
-        if (attackFlg||knockbackFlg) return;
+        if (isAtk||knockbackFlg) return;
 
         // moveDirectionは派生クラスで設定される（入力 or AI）
         Vector3 velocity = moveDirection * moveSpeed;
@@ -113,6 +136,60 @@ public class CharaBase : MonoBehaviour
     public void Heal(int healPoint)
     {
         hp += healPoint;
+    }
+
+    public void StartAttack()
+    {
+        if (!isAtk)
+        {
+            BeginAttack(0);
+        }
+        else
+        {
+            nextAtk = true;
+        }
+    }
+    void BeginAttack(int index)
+    {
+        isAtk = true;
+        nextAtk = false;
+        atkIndex = index;
+        atkTimer = 0f;
+
+        animator.Play(attacks[index].animName, 0, 0f);
+    }
+
+    protected virtual void UpdateAttack()
+    {
+        if (!isAtk) return;
+        atkTimer += Time.deltaTime;
+        var data = attacks[atkIndex];
+
+        // ヒット判定
+        atkErea[atkIndex].enabled =
+            atkTimer >= data.hitStart && atkTimer <= data.hitEnd;
+
+        // 終了
+        if(animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+        {
+            atkErea[atkIndex].enabled = false;
+
+            if (nextAtk && atkIndex + 1 < attacks.Length)
+            {
+                BeginAttack(atkIndex + 1);
+            }
+            else
+            {
+                EndAttack();
+            }
+        }
+    }
+    protected virtual void EndAttack()
+    {
+        isAtk = false;
+        nextAtk = false;
+        atkIndex = -1;
+        animator.Play("CharacterArmature|Idle");
     }
 
 

@@ -14,16 +14,16 @@ public class Enemy1 : CharaBase
     float attackInterval;
     float attackSpawnTimer=0;
 
-    [SerializeField]
-    BoxCollider AttackErea;
 
 
     private void Update()
     {
+      //  UpdateAttack();
+
         attackSpawnTimer += Time.deltaTime;
         if(attackSpawnTimer > attackInterval)
         {
-            StartCoroutine(Attack());
+           if (!isAtk) StartAttack();
             attackSpawnTimer = 0;
         }
         //プレイヤーを発見したら追いかける
@@ -42,18 +42,5 @@ public class Enemy1 : CharaBase
         }
     }
 
-    //攻撃範囲有効化コルーチン
-    private IEnumerator Attack()
-    {
-        //攻撃
-        animator.SetBool("Attack", true);
-        AttackErea.enabled = true;
-        yield return new WaitForSeconds(0.7f);
 
-        //攻撃終了
-        animator.SetBool("Attack", false);
-        AttackErea.enabled = false;
-
-        yield return null;
-    }
 }
