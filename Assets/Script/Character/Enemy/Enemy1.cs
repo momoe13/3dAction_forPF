@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Enemy1 : charabase
+public class Enemy1 : CharaBase
 {
     [SerializeField]
     Transform pl_Pos;
@@ -18,19 +18,20 @@ public class Enemy1 : charabase
 
     private void Update()
     {
-      //  UpdateAttack();
+        if(isDeath)return;
+
+        UpdateAtk                                                                                                                                                  ();
 
         attackSpawnTimer += Time.deltaTime;
         if(attackSpawnTimer > attackInterval)
         {
-           if (!isAtk) StartAttack();
+           if (!isAtk)InputAtk();
             attackSpawnTimer = 0;
         }
         //プレイヤーを発見したら追いかける
         if (followArea.SetFlg()) {
 
-            //TODO:01　Updateで常にアニメーション設定しない！
-            animator.SetBool("Move", true);
+            UpdateAnimState(AnimType.Walk);
             Vector3 dir=(pl_Pos.position - transform.position).normalized;
             moveDirection = dir.normalized;
             MoveCharacter();
@@ -38,7 +39,7 @@ public class Enemy1 : charabase
         }
         else
         {
-            animator.SetBool("Move", false);
+            UpdateAnimState(AnimType.Idle);
         }
     }
 

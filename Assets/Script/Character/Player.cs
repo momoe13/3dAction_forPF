@@ -35,21 +35,6 @@ public class Player :CharaBase
 
     private void InputMove()
     {
-        if (isAtk) return;
-
-        float h = Input.GetAxisRaw("Horizontal"); // A,Dキー
-        float v = Input.GetAxisRaw("Vertical");   // W,Sキー
-
-        AnimType nextAnim = SetMove(h,v);
-
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            isInvincible = true;
-            Vector3 stepDir = transform.forward;
-            rb.linearVelocity = stepDir * 3.0f;
-            nextAnim = AnimType.Rolling;
-        }
-
         //ローリング終了
         if (isInvincible)
         {
@@ -58,7 +43,25 @@ public class Player :CharaBase
                 isInvincible = false;
 
             }
+            else  return;
         }
+        if (isAtk) return;
+
+        float h = Input.GetAxisRaw("Horizontal"); // A,Dキー
+        float v = Input.GetAxisRaw("Vertical");   // W,Sキー
+
+        AnimType nextAnim = SetMove(h,v);
+
+        //ローリング開始
+        if (Input.GetMouseButtonDown(1))
+        {
+            isInvincible = true;
+            Vector3 stepDir = transform.forward;
+            rb.linearVelocity = stepDir * 3.0f;
+            nextAnim = AnimType.Rolling;
+        }
+
+
 
         UpdateAnimState(nextAnim);
 

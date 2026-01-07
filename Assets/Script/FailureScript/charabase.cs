@@ -66,6 +66,11 @@ public class charabase : MonoBehaviour
         // maxSpeed = moveSpeed * 3f;
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true; // 回転はスクリプトで制御する
+
+        for (int i = 0; i < atkErea.Length; i++)
+        {
+            atkErea[i].enabled = false;
+        }
     }
 
 

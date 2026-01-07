@@ -43,7 +43,7 @@ public class CharaBase : MonoBehaviour
 
 
     [SerializeField]
-    private float rotationSpeed = 10f;
+    private float rotationSpeed = 5f;
 
     [SerializeField]
     protected int hp;
@@ -99,7 +99,9 @@ public class CharaBase : MonoBehaviour
         atkStep = step;
 
         AnimType type= (AnimType)((int)AnimType.Attack1 + (step - 1));
-       
+
+        if(atkStep-1<=atkErea.Length) atkErea[atkStep - 1].enabled = true;
+
 
         UpdateAnimState(type);
     }
@@ -111,10 +113,11 @@ public class CharaBase : MonoBehaviour
         // 攻撃終了
         if (animatClipTable.GetAnimStateInfo() >= 1.0f)
         {
+            if (atkStep - 1 <= atkErea.Length) atkErea[atkStep-1].enabled = false;
+
             if (nextAtk)
             {
                 StartAttack(atkStep + 1);
-                StartCoroutine("WaitTime");
                 return ;
             }
 
@@ -162,7 +165,9 @@ public class CharaBase : MonoBehaviour
 
 
         hp -= damage;
-        if (hp <= 0) { Death(); }
+        if (hp <= 0) {
+            isDeath = true;
+            Death(); }
     }
 
 
@@ -190,9 +195,25 @@ public class CharaBase : MonoBehaviour
     {
         //TODO:良い感じにしてこのif文消す
         if (this.gameObject.name == "Player") return;
-        this.gameObject.SetActive(false);
+        StartCoroutine(DeathAnimation());
     }
 
+    IEnumerator DeathAnimation()
+    {
+        animatClipTable.PlayForce(AnimType.Death);
+        yield return 0.5f;
+
+        while (true)
+        {
+            if (animatClipTable.GetAnimStateInfo() >= 1.0f)
+            {
+                this.gameObject.SetActive(false);
+                yield break;
+            }
+            yield return null;
+        }
+
+    }
 
     IEnumerator WaitTime()
     {
