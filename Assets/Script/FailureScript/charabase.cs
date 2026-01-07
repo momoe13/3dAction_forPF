@@ -50,7 +50,7 @@ public class charabase : MonoBehaviour
     [SerializeField]
     protected BoxCollider[] atkErea;
 
-    [SerializeField] AttackData[] attacks;
+    [SerializeField] atkdata[] attacks;
 
     int atkIndex = -1;
     protected bool isAtk;
@@ -127,7 +127,7 @@ public class charabase : MonoBehaviour
 
 
         hp -= damage;
-        if (hp <= 0) { Death(); }
+       // if (hp <= 0) { Death(); }
     }
 
 
@@ -191,11 +191,5 @@ public class charabase : MonoBehaviour
     }
 
 
-    protected virtual void Death()
-    {
-        //TODO:良い感じにしてこのif文消す
-        if (this.gameObject.name == "Player") return;
-        this.gameObject.SetActive(false);
-    }
 
 }

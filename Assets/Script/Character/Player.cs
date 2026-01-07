@@ -1,16 +1,14 @@
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class Player :charabase
+public class Player :CharaBase
 {
     [Header("Camera参照")][SerializeField]
     Transform cameraTransform;
 
-
-
-    
-    int MaxHP;
+    int MaxHP=30;
 
     private void Start()
     {
@@ -23,27 +21,53 @@ public class Player :charabase
     private void Update()
     {
         //復活
-        if (deathFlg)
+        if (isDeath)
         {
             if (Input.GetKeyDown(KeyCode.Return)) StateReset();
+            return;
         }
-        else
-        {
-            GroundCheck();
-            HandleInput();
+        InputMove();
 
-            UpdateAttack();
-        }
+        if (Input.GetMouseButtonDown(0)) InputAtk();
+
+        UpdateAtk();
     }
 
-
-    //TODO:アニメーション遷移フラグをキャラクターベースに移す
-    private void HandleInput()
+    private void InputMove()
     {
+        if (isAtk) return;
+
         float h = Input.GetAxisRaw("Horizontal"); // A,Dキー
         float v = Input.GetAxisRaw("Vertical");   // W,Sキー
 
-        //Debug.Log(h+ " " + v);
+        AnimType nextAnim = SetMove(h,v);
+
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            isInvincible = true;
+            Vector3 stepDir = transform.forward;
+            rb.linearVelocity = stepDir * 3.0f;
+            nextAnim = AnimType.Rolling;
+        }
+
+        //ローリング終了
+        if (isInvincible)
+        {
+            if (animatClipTable.GetAnimStateInfo() >= 1.0f)
+            {
+                isInvincible = false;
+
+            }
+        }
+
+        UpdateAnimState(nextAnim);
+
+        MoveCharacter();
+    }
+
+    private AnimType SetMove(float h, float v)
+    {
+        AnimType nextAnim;
 
         Vector3 inputDir = new Vector3(h, 0, v).normalized;
 
@@ -59,72 +83,46 @@ public class Player :charabase
             camRight.Normalize();
 
             moveDirection = (camForward * v + camRight * h).normalized;
-            if (!isAtk) { animator.SetBool("Move", true); }
+
+
+            bool isDash = Input.GetKey(KeyCode.LeftShift);
+
+
+            //三項演算子（shift押してたら走る、押してないなら歩く。）
+            nextAnim = isDash ? AnimType.Run : AnimType.Walk;
+
+            //三項演算子（ダッシュならtargetSpeedは最大速度に、押してないなら通常速度に。）
+            float targetSpeed = isDash ? maxSpeed : maxSpeed / 3f;
+
+            moveSpeed = Mathf.Lerp(moveSpeed, targetSpeed, Time.deltaTime * 5);
+
         }
         else
         {
             moveDirection = Vector3.zero;
 
-            animator.SetBool("Move", false);
-        }
-        //---ダッシュ処理------
-        //三項演算子（シフトが押されてたらtargetSpeedは最大速度に、押してないなら通常速度に。）
-        float targetSpeed = Input.GetKey(KeyCode.LeftShift) ? maxSpeed : maxSpeed / 3f;
-       
-        moveSpeed = Mathf.Lerp(moveSpeed, targetSpeed, Time.deltaTime*5);
-        animator.SetBool("Dash", Input.GetKey(KeyCode.LeftShift));
-
-        MoveCharacter();
-        
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-                Jump();
+            nextAnim = AnimType.Idle;
         }
 
-       
-        if(Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            if (!isAtk) StartAttack();
-            else
-            {
-                nextAtk = true;
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            invincibleFlg = true;
-            Vector3 stepDir = transform.forward;
-            rb.linearVelocity = stepDir * 3.0f;
-            animator.SetBool("Roll", true);
-        }
-
-        //ローリング終了
-        if (invincibleFlg)
-        {
-            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
-            {
-                animator.SetBool("Roll", false);
-                invincibleFlg = false;
-
-            }
-        }
-
+        return nextAnim;
     }
+
+ 
 
 
     //復活用初期化処理
     private void StateReset()
     {
         hp = MaxHP;
-        deathFlg= false;
-        animator.SetBool("Death", false);
-        animator.Play("CharacterArmature|Idle");
+        isDeath= false;
+
+        UpdateAnimState(AnimType.Idle);
     }
     
     protected override void Death()
     {
-        animator.SetBool("Death", true);
-        deathFlg = true;
+        UpdateAnimState(AnimType.Death);
+        isDeath = true;
     }
 
     public Vector2 SetHP()
@@ -135,9 +133,4 @@ public class Player :charabase
         return plHp;
     }
 
-    private void EndRoll()
-    {
-        animator.SetBool("Roll", false);
-        invincibleFlg = false;
-    }
 }
