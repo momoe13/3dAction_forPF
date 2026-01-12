@@ -73,7 +73,7 @@ AnimatorStateMachine:
     m_Position: {x: 230, y: -220, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3304664767907923484}
-    m_Position: {x: 1040, y: -320, z: 0}
+    m_Position: {x: 330, y: -400, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 3557283749079104609}
     m_Position: {x: 1323.1802, y: -169.2771, z: 0}
@@ -171,7 +171,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: CharacterArmature|Shoot_OneHanded
+  m_Name: Shoot
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []

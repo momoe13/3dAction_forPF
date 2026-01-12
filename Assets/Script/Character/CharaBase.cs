@@ -8,6 +8,7 @@ public enum AnimType
     Walk,
     Run,
     Rolling,
+
     Punch,
     SitDown,
     Victory,
@@ -15,6 +16,8 @@ public enum AnimType
     Attack1, 
     Attack2,
     Attack3,
+
+    Shoot,
 
     Hit,
     Knockback,
@@ -63,6 +66,9 @@ public class CharaBase : MonoBehaviour
     [SerializeField]
     protected BoxCollider[] atkErea;
 
+    [SerializeField]
+    ShooterScript shooter;
+
     //-------------------------------------
 
 
@@ -76,8 +82,29 @@ public class CharaBase : MonoBehaviour
         UpdateAnimState(nowAnimType);
     }
 
-  
 
+    /// <summary>
+    /// 前後左右移動
+    /// </summary>
+    /// <param name="moveDirection"> 移動方向</param>
+    protected void MoveCharacter()
+    {
+        // moveDirectionは派生クラスで設定される（入力 or AI）
+        Vector3 velocity = moveDirection * moveSpeed;
+        velocity.y = rb.linearVelocity.y; // 重力はRigidbodyに任せる
+        rb.linearVelocity = velocity;
+        RotateCharacter();
+    }
+    private void RotateCharacter()
+    {
+        if (moveDirection.sqrMagnitude > 0.01f)
+        {
+            Quaternion targetRot = Quaternion.LookRotation(moveDirection);
+            rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRot, rotationSpeed * Time.fixedDeltaTime));
+        }
+    }
+
+    //------近接攻撃-----------------
     protected void InputAtk()
     { // 攻撃してない → 1段目開始
         if (!isAtk)
@@ -132,6 +159,18 @@ public class CharaBase : MonoBehaviour
         UpdateAnimState(AnimType.Idle);
     }
 
+    //------近接攻撃-----------------
+
+
+    //-----遠距離攻撃---------------
+    protected void ShootAtk(int layerNum)
+    {
+        shooter.Shoot(layerNum);
+    }
+
+    //-----遠距離攻撃---------------
+
+
     protected void UpdateAnimState(AnimType newAnimType)
     {
         if (nowAnimType == newAnimType) return;
@@ -171,26 +210,6 @@ public class CharaBase : MonoBehaviour
     }
 
 
-    /// <summary>
-    /// 前後左右移動
-    /// </summary>
-    /// <param name="moveDirection"> 移動方向</param>
-    protected void MoveCharacter()
-    {
-        // moveDirectionは派生クラスで設定される（入力 or AI）
-        Vector3 velocity = moveDirection * moveSpeed;
-        velocity.y = rb.linearVelocity.y; // 重力はRigidbodyに任せる
-        rb.linearVelocity = velocity;
-        RotateCharacter();
-    }
-    private void RotateCharacter()
-    {
-        if (moveDirection.sqrMagnitude > 0.01f)
-        {
-            Quaternion targetRot = Quaternion.LookRotation(moveDirection);
-            rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRot, rotationSpeed * Time.fixedDeltaTime));
-        }
-    }
     protected virtual void Death()
     {
         //TODO:良い感じにしてこのif文消す

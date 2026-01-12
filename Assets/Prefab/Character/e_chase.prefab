@@ -42,6 +42,7 @@ GameObject:
   - component: {fileID: 320285686194560837}
   - component: {fileID: 4462440826394897171}
   - component: {fileID: 7718155795602092316}
+  - component: {fileID: 6921928692232744471}
   m_Layer: 0
   m_Name: e_chase
   m_TagString: Target
@@ -82,14 +83,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jumpPower: 0
   rotationSpeed: 10
-  groundCheck: {fileID: 693291425943782320}
-  groundRadius: 0.3
-  hp: 10
-  animator: {fileID: 6420134194774320326}
+  hp: 5
+  isAtk: 0
+  atkStep: 0
+  atkErea:
+  - {fileID: 4851913799708050943}
   pl_Pos: {fileID: 0}
   followArea: {fileID: 1079590718343924344}
   attackInterval: 3
-  AttackErea: {fileID: 4851913799708050943}
 --- !u!54 &7718155795602092316
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -117,6 +118,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 84
   m_CollisionDetection: 0
+--- !u!114 &6921928692232744471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4125168058080636186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52c49fce2035d834693abb456569e537, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 6420134194774320326}
 --- !u!1001 &1050945212549422943
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -289,11 +303,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6484091949937430548, guid: 3e1dfcd0c9e84b54492b27fc5f994f20, type: 3}
       propertyPath: damage
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6484091949937430548, guid: 3e1dfcd0c9e84b54492b27fc5f994f20, type: 3}
       propertyPath: knockbackPower
-      value: 10
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7377094939317690165, guid: 3e1dfcd0c9e84b54492b27fc5f994f20, type: 3}
       propertyPath: m_Name

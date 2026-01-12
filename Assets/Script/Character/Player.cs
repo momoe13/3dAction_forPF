@@ -1,5 +1,3 @@
-using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -9,6 +7,9 @@ public class Player :CharaBase
     Transform cameraTransform;
 
     int MaxHP=30;
+
+    int atkType = 2;
+    int layerNum = 6;
 
     private void Start()
     {
@@ -28,7 +29,12 @@ public class Player :CharaBase
         }
         InputMove();
 
-        if (Input.GetMouseButtonDown(0)) InputAtk();
+        if (Input.GetKeyDown(KeyCode.Alpha1))atkType = 1;
+        if (Input.GetKeyDown(KeyCode.Alpha2))atkType = 2;
+
+
+
+        if (Input.GetMouseButtonDown(0)) SetAtk();
 
         UpdateAtk();
     }
@@ -111,7 +117,18 @@ public class Player :CharaBase
     }
 
  
-
+    private void SetAtk()
+    {
+        switch (atkType)
+        {
+            case 1:
+                InputAtk();
+                break;
+            case 2:
+                ShootAtk(layerNum);
+                break;
+        }
+    }
 
     //復活用初期化処理
     private void StateReset()
