@@ -70,7 +70,8 @@ public class CharaBase : MonoBehaviour
     ShooterScript shooter;
 
     //-------------------------------------
-
+    [Header("ドロップアイテム")][SerializeField]
+    GameObject dropItem;
 
 
     private void Awake()
@@ -226,6 +227,7 @@ public class CharaBase : MonoBehaviour
         {
             if (animatClipTable.GetAnimStateInfo() >= 1.0f)
             {
+                if(dropItem!=null) Instantiate(dropItem);
                 this.gameObject.SetActive(false);
                 yield break;
             }

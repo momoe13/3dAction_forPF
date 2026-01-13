@@ -26,6 +26,7 @@ TagManager:
   - 
   - 
   - 
+  - ModelUI
   - 
   - 
   - 
@@ -35,8 +36,7 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - 3DModelUI
   - 
   m_SortingLayers:
   - name: Default

@@ -134,6 +134,9 @@ MonoBehaviour:
   - {fileID: 8543426828519038222}
   shooter: {fileID: 2877513714339410806}
   cameraTransform: {fileID: 0}
+  weapons:
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &5400811319308936122
 GameObject:
   m_ObjectHideFlags: 0

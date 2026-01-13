@@ -6,9 +6,13 @@ public class Player :CharaBase
     [Header("Camera参照")][SerializeField]
     Transform cameraTransform;
 
+    [SerializeField]
+    MeshRenderer[] weapons;
+
+
     int MaxHP=30;
 
-    int atkType = 2;
+    int atkType = 1;
     int layerNum = 6;
 
     private void Start()
@@ -18,6 +22,12 @@ public class Player :CharaBase
             atkErea[i].enabled = false;
         }
         MaxHP = hp;
+
+        for(int i=0;i<weapons.Length;i++)
+        {
+            weapons[i].enabled=false;
+        }
+        weapons[atkType - 1].enabled=true;
     }
     private void Update()
     {
@@ -29,8 +39,20 @@ public class Player :CharaBase
         }
         InputMove();
 
-        if (Input.GetKeyDown(KeyCode.Alpha1))atkType = 1;
-        if (Input.GetKeyDown(KeyCode.Alpha2))atkType = 2;
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            atkType = 1;
+
+            weapons[0].enabled = true;
+            weapons[1].enabled = false;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        { 
+            atkType = 2;
+
+            weapons[0].enabled = false;
+            weapons[1].enabled = true;
+        }
 
 
 
@@ -128,6 +150,7 @@ public class Player :CharaBase
                 ShootAtk(layerNum);
                 break;
         }
+
     }
 
     //復活用初期化処理
