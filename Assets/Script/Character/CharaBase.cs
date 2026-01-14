@@ -79,8 +79,11 @@ public class CharaBase : MonoBehaviour
         animatClipTable = GetComponent<AnimationClipTable>();
         rb = GetComponent<Rigidbody>();
 
-        // 初期状態を明示的に再生
-        UpdateAnimState(nowAnimType);
+        if (dropItem != null)
+        { dropItem.SetActive(false); }
+
+            // 初期状態を明示的に再生
+            UpdateAnimState(nowAnimType);
     }
 
 
@@ -227,7 +230,11 @@ public class CharaBase : MonoBehaviour
         {
             if (animatClipTable.GetAnimStateInfo() >= 1.0f)
             {
-                if(dropItem!=null) Instantiate(dropItem);
+                if(dropItem!=null)
+                {
+                    dropItem.gameObject.SetActive(true);
+                    dropItem.transform.SetParent(null, true);
+                }
                 this.gameObject.SetActive(false);
                 yield break;
             }
