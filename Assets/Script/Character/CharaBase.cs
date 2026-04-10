@@ -103,7 +103,9 @@ public class CharaBase : MonoBehaviour
     {
         if (moveDirection.sqrMagnitude > 0.01f)
         {
-            Quaternion targetRot = Quaternion.LookRotation(moveDirection);
+            Vector3 lookDir = moveDirection;
+            lookDir.y = 0; // キャラクターの高さの差を無視する
+            Quaternion targetRot = Quaternion.LookRotation(lookDir); 
             rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRot, rotationSpeed * Time.fixedDeltaTime));
         }
     }

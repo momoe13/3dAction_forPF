@@ -572,6 +572,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: e_chase (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4462440826394897171, guid: 630180d574af43e45af172092229793f, type: 3}
+      propertyPath: pl_Pos
+      value: 
+      objectReference: {fileID: 1415527536}
     - target: {fileID: 7562632338290791522, guid: 630180d574af43e45af172092229793f, type: 3}
       propertyPath: manager
       value: 
@@ -790,6 +794,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: e_chase (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 4462440826394897171, guid: 630180d574af43e45af172092229793f, type: 3}
+      propertyPath: pl_Pos
+      value: 
+      objectReference: {fileID: 1415527536}
     - target: {fileID: 7562632338290791522, guid: 630180d574af43e45af172092229793f, type: 3}
       propertyPath: manager
       value: 
