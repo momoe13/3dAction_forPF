@@ -11,13 +11,18 @@ public class CameraRotat : MonoBehaviour
     [SerializeField]
     GameObject playerObject;         //追尾 オブジェクト
     [SerializeField, Range(0, 1)]
-    //private Vector2 rotationSpeed;           //回転速度
     float rotationSpeed=1.0f;
     Vector3 lastMousePosition;      //最後のマウス座標
     Vector3 lastTargetPosition;     //最後の追尾オブジェクトの座標
 
 
     float zoom;
+
+    //ロックオン機能
+    bool lockon = false;
+    GameObject targetObj;
+    GameObject searchSphere;
+
 
     void Start()
     {
@@ -30,6 +35,10 @@ public class CameraRotat : MonoBehaviour
     {
         Chase();
         Rotate();
+        if (Input.GetMouseButtonDown(2)) {
+            lockon= !lockon ;
+            RockOn();
+        }
         Zoom();
     }
 
@@ -76,4 +85,11 @@ public class CameraRotat : MonoBehaviour
         transform.position = transform.position + offset;
     }
 
+    void RockOn()
+    {
+        if (lockon) { 
+        
+        }
+
+    }
 }
