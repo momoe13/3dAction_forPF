@@ -94,13 +94,13 @@ public class ShooterScript : MonoBehaviour
         Destroy(obj.gameObject);    // オブジェクトを破壊する処理
     }
 
-    // 他のクラスから敵を取り出すための処理
+    // 他のクラスから矢を取り出すための処理
     public void GetBullet()
     {
         pool.Get();
     }
 
-    // 他のクラスから敵をプールに戻すための処理
+    // 他のクラスから矢をプールに戻すための処理
     public void ReleaseBullet(BulletScript obj)
     {
         pool.Release(obj);
