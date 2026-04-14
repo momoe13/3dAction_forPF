@@ -79,6 +79,7 @@ public class CharaBase : MonoBehaviour
         animatClipTable = GetComponent<AnimationClipTable>();
         rb = GetComponent<Rigidbody>();
 
+        rb.freezeRotation = true; // 回転はスクリプトで制御する
         if (dropItem != null)
         { dropItem.SetActive(false); }
 
