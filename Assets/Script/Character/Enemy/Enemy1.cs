@@ -14,7 +14,7 @@ public class Enemy1 : CharaBase
     float attackInterval;
     float attackSpawnTimer=0;
 
-
+    float distance = 4.0f;
 
     private void Update()
     {
@@ -31,8 +31,12 @@ public class Enemy1 : CharaBase
         //プレイヤーを発見したら追いかける
         if (followArea.SetFlg()) {
 
+            float dis = Vector3.Distance(pl_Pos.position    , this.transform.position);
+
+            if (dis < distance) return;
+
             UpdateAnimState(AnimType.Walk);
-            Vector3 dir=(pl_Pos.position - transform.position).normalized;
+            Vector3 dir = (pl_Pos.position - transform.position).normalized;
             moveDirection = dir.normalized;
             MoveCharacter();
 

@@ -196,6 +196,7 @@ public class CharaBase : MonoBehaviour
     {
         if (isInvincible) return;
 
+        animatClipTable.PlayForce(AnimType.Hit);
 
         //攻撃方向を受け取り、その方向に下がる
         Vector3 hitVec = (this.transform.position - hitPos).normalized;
