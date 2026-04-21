@@ -5,7 +5,7 @@ public class LockOnSensor : MonoBehaviour
 {
     public GameObject NowTarget { get;private set; }
 
-
+    [SerializeField]
     List<GameObject> enemyList = new();
 
     private void Update()
@@ -19,15 +19,16 @@ public class LockOnSensor : MonoBehaviour
 
     private void OnTriggerStay(Collider coll)
     {
-        if(coll.tag=="Enemy")
+        if(coll.gameObject.CompareTag("Target"))
         {
             NowTarget = coll.gameObject;
+            enemyList.Add(NowTarget);
         }
     }
 
     private void OnTriggerExit(Collider coll)
     {
-        if(coll.tag=="Enemy")
+        if(coll.gameObject.CompareTag("Target"))
         {
             NowTarget=null;
         }

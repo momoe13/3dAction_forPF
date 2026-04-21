@@ -11,8 +11,8 @@ public class CameraController : MonoBehaviour
     GameObject playerObj;
     [SerializeField] float height = 1.5f;//カメラの高さ
     [SerializeField] float distance = 15.0f;//カメラとのオフセット
-    [SerializeField] float rotAngle = 0.0f;
-    [SerializeField] float heightAngle = 10.0f;
+    [SerializeField] float rotAngle = 0.0f;//水平（横）方向のカメラ角度
+    [SerializeField] float heightAngle = 10.0f;//垂直（縦）方向
 
     [SerializeField] float dis_min = 5.0f;//見上げた時のカメラ距離（任意）
     [SerializeField] float dis_mdl = 10.0f;//通常のカメラ距離
@@ -27,26 +27,52 @@ public class CameraController : MonoBehaviour
     [SerializeField] float forwardDistance = 2.0f;
     Vector3 addForward;
     Vector3 prevTargetPos;
-    [SerializeField]float rotAngleAttenRate=5.0f;
+    [SerializeField] float rotAngleAttenRate=5.0f;
     [SerializeField] float angleAttenRate = 1.0f;
+
+    //ロックオン機能
+    [SerializeField] bool isRockon = true;
+
+    [SerializeField]
+    GameObject rockonTargetObj;
+
+    [SerializeField] GameObject searchCircle;
+    [SerializeField] GameObject targetIcon;
+
+    [SerializeField]LockOnSensor onSensor;
 
     private void Start()
     {
-        nowPos = playerObj.transform.position;  
+        nowPos = playerObj.transform.position;
+        onSensor = searchCircle.GetComponent<LockOnSensor>();
+
     }
     private void LateUpdate()
     {
-        Debug.Log(speed);
         rotAngle -= speed.x * Time.deltaTime * 50.0f;
         heightAngle += speed.z * Time.deltaTime * 20.0f;
         heightAngle = Mathf.Clamp(heightAngle, -40.0f, 60.0f);
         distance = Mathf.Clamp(distance, 5.0f, 40.0f);
 
+        rockonTargetObj = onSensor.NowTarget;
+        Debug.Log(rockonTargetObj);
         //画面の中心位置
         if (enableAtten)
         {
             //位置をズラすための増加量
             var target = playerObj.transform.position;
+
+            if (isRockon) 
+            {
+                if (rockonTargetObj != null)
+                {
+                    //ロックオン対象の位置に上書き
+                    target = rockonTargetObj.transform.position;
+                }
+                else isRockon = false;
+            
+            
+            }
 
             var halfPoint = (playerObj.transform.position + target) / 2;
             var deltaPos = halfPoint - prevTargetPos;//位置の微小増加量
@@ -70,21 +96,44 @@ public class CameraController : MonoBehaviour
         if (enableAtten) nowHeightAngle = Mathf.Lerp(nowHeightAngle, heightAngle, Time.deltaTime * rotAngleAttenRate);
         else nowHeightAngle = heightAngle;
 
-        //カメラの垂直角度でカメラの角度を変える
-        if (heightAngle > 30)
+        if (isRockon)
         {
-            distance = Mathf.Lerp(distance, 20.0f * heightAngle / 30.0f, Time.deltaTime);
+            var dis = Vector3.Distance(playerObj.transform.position,
+                 rockonTargetObj.transform.position);
+
+            if (heightAngle > 30)
+            {
+                distance = Mathf.Lerp(distance, dis_mdl * dis/ 10.0f * heightAngle / 30.0f, Time.deltaTime);
+            }
+            else if (heightAngle <= 30 && heightAngle >= -3)
+            {
+                distance = Mathf.Lerp(distance, dis_mdl * dis / 10.0f, Time.deltaTime);
+            }
+            else if (heightAngle < -3)
+            {
+                isRockon = false;
+                Debug.Log("カメラ");
+            }
+
         }
-        else if (heightAngle <= 30 && heightAngle >= -3)
+        else
         {
-            distance = Mathf.Lerp(distance, 20.0f, Time.deltaTime);
-        }
-        else if (heightAngle < -3)
-        {
-            distance = Mathf.Lerp(distance, dis_min, Time.deltaTime);
+            //カメラの垂直角度でカメラの角度を変える
+            if (heightAngle > 30)
+            {
+                distance = Mathf.Lerp(distance, 20.0f * heightAngle / 30.0f, Time.deltaTime);
+            }
+            else if (heightAngle <= 30 && heightAngle >= -3)
+            {
+                distance = Mathf.Lerp(distance, 20.0f, Time.deltaTime);
+            }
+            else if (heightAngle < -3)
+            {
+                distance = Mathf.Lerp(distance, dis_min, Time.deltaTime);
+            }
         }
 
-            //カメラ位置変更
+        //カメラ位置変更
         var deg = Mathf.Deg2Rad;
         var cx = Mathf.Sin(nowRotAngele * deg) * Mathf.Cos(nowHeightAngle * deg) * distance;
         var cy = Mathf.Sin(nowHeightAngle * deg) * distance;
@@ -94,11 +143,30 @@ public class CameraController : MonoBehaviour
         //カメラをプレイヤーに向ける
         var rot = Quaternion.LookRotation((nowPos - transform.position).normalized);
         transform.rotation =rot;
+        TargetItem();
     }
 
     public void OnCamera(InputAction.CallbackContext context)
     {
         speed =new Vector3(context.ReadValue<Vector2>().x,0f,context.ReadValue<Vector2>().y);
 
+    }
+
+    public void OnRockon(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            isRockon = !isRockon;
+        }
+    }
+
+    private void TargetItem()
+    {
+        if (isRockon)
+        {
+            targetIcon.SetActive(true);
+            targetIcon.transform.position = rockonTargetObj.transform.GetChild(1).position;
+        }
+        else targetIcon.SetActive(false);
     }
 }
