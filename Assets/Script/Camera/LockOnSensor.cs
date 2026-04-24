@@ -5,24 +5,16 @@ public class LockOnSensor : MonoBehaviour
 {
     public GameObject NowTarget { get;private set; }
 
-    [SerializeField]
-    List<GameObject> enemyList = new();
+    CharaBase charaBase;
 
-    private void Update()
-    {
-        if (enemyList.Count == 0) 
-        {
-            NowTarget = null;
-            return;
-        }
-    }
-
+   
     private void OnTriggerStay(Collider coll)
     {
         if(coll.gameObject.CompareTag("Target"))
         {
             NowTarget = coll.gameObject;
-            enemyList.Add(NowTarget);
+            charaBase =NowTarget.GetComponentInParent<CharaBase>();
+            Debug.Log("キャラクタークラス" + NowTarget);
         }
     }
 
@@ -30,7 +22,13 @@ public class LockOnSensor : MonoBehaviour
     {
         if(coll.gameObject.CompareTag("Target"))
         {
-            NowTarget=null;
+           NowTarget = null;
+
         }
+    }
+
+    public Vector3 GetTargetIconPos()
+    {
+        return charaBase.GetTargetIconPos();
     }
 }

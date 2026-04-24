@@ -73,6 +73,8 @@ public class CharaBase : MonoBehaviour
     [Header("ドロップアイテム")][SerializeField]
     GameObject dropItem;
 
+    [SerializeField]
+    GameObject targetIconPos;
 
     private void Awake()
     {
@@ -250,5 +252,10 @@ public class CharaBase : MonoBehaviour
     IEnumerator WaitTime()
     {
         yield return 5.0f;
+    }
+
+    public Vector3 GetTargetIconPos()
+    {
+        return targetIconPos.transform.position;
     }
 }

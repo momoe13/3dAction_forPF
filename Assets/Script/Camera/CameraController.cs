@@ -39,7 +39,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] GameObject searchCircle;
     [SerializeField] GameObject targetIcon;
 
-    [SerializeField]LockOnSensor onSensor;
+    LockOnSensor onSensor;
 
     private void Start()
     {
@@ -55,7 +55,6 @@ public class CameraController : MonoBehaviour
         distance = Mathf.Clamp(distance, 5.0f, 40.0f);
 
         rockonTargetObj = onSensor.NowTarget;
-        Debug.Log(rockonTargetObj);
         //画面の中心位置
         if (enableAtten)
         {
@@ -143,7 +142,9 @@ public class CameraController : MonoBehaviour
         //カメラをプレイヤーに向ける
         var rot = Quaternion.LookRotation((nowPos - transform.position).normalized);
         transform.rotation =rot;
+
         TargetItem();
+
     }
 
     public void OnCamera(InputAction.CallbackContext context)
@@ -162,11 +163,16 @@ public class CameraController : MonoBehaviour
 
     private void TargetItem()
     {
-        if (isRockon)
+        if (isRockon && rockonTargetObj != null)
         {
             targetIcon.SetActive(true);
-            targetIcon.transform.position = rockonTargetObj.transform.GetChild(1).position;
+            
+            targetIcon.transform.position = onSensor.GetTargetIconPos(); ;
         }
-        else targetIcon.SetActive(false);
+        else
+        {
+            targetIcon.SetActive(false);
+
+        }
     }
 }
