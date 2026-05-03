@@ -14,7 +14,7 @@ public class LockOnSensor : MonoBehaviour
         {
             NowTarget = coll.gameObject;
             charaBase =NowTarget.GetComponentInParent<CharaBase>();
-            Debug.Log("キャラクタークラス" + NowTarget);
+//            Debug.Log("キャラクタークラス" + NowTarget);
         }
     }
 

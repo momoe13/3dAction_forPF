@@ -71,6 +71,7 @@ Transform:
   - {fileID: 4014020054798166359}
   - {fileID: 7652858909988236498}
   - {fileID: 542677595345781553}
+  - {fileID: 3402594440182577468}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &3207553718518257001
@@ -136,6 +137,7 @@ MonoBehaviour:
   - {fileID: 8543426828519038222}
   shooter: {fileID: 2877513714339410806}
   dropItem: {fileID: 0}
+  targetIconPos: {fileID: 0}
   cameraTransform: {fileID: 0}
   weapons:
   - {fileID: 3334127448757736331}
@@ -269,6 +271,158 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5611248383579946954}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7995817702186085597
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3402594440182577468}
+  - component: {fileID: 4696546028522538310}
+  m_Layer: 0
+  m_Name: Spline
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3402594440182577468
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7995817702186085597}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.97191954, y: 0.5, z: -1.7092509}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5611248383579946954}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4696546028522538310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7995817702186085597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dab5c7d4c32e743048dfca98e2d5914f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Splines::UnityEngine.Splines.SplineContainer
+  m_Spline:
+    m_EditModeType: 1
+    m_Knots: []
+    m_MetaData: []
+    m_Closed: 0
+    m_IntData:
+      m_Data: []
+    m_FloatData:
+      m_Data: []
+    m_Float4Data:
+      m_Data: []
+    m_ObjectData:
+      m_Data: []
+  m_Splines:
+  - m_EditModeType: 1
+    m_Knots:
+    - Position:
+        x: 0
+        y: 0
+        z: 0
+      TangentIn:
+        x: -0
+        y: -0
+        z: -0.20035659
+      TangentOut:
+        x: 0
+        y: 0
+        z: 0.20035659
+      Rotation:
+        value:
+          x: -0.00000003734292
+          y: 1
+          z: 0.00000011899713
+          w: 4.4437004e-15
+    - Position:
+        x: 0
+        y: 0.00000047683716
+        z: -2.0035658
+      TangentIn:
+        x: -0
+        y: -0
+        z: -0.62843585
+      TangentOut:
+        x: 0
+        y: 0
+        z: 1.160239
+      Rotation:
+        value:
+          x: -0.0031764596
+          y: 0.9287907
+          z: 0.3705888
+          w: 0.001267412
+    - Position:
+        x: 0
+        y: 6.82
+        z: -2.36
+      TangentIn:
+        x: -0
+        y: -0
+        z: -1.5046388
+      TangentOut:
+        x: 0
+        y: 0
+        z: 0.9511126
+      Rotation:
+        value:
+          x: -0.44573554
+          y: 0.2514529
+          z: 0.42212072
+          w: 0.7482683
+    - Position:
+        x: 0
+        y: 8.19
+        z: 0
+      TangentIn:
+        x: -0
+        y: -0
+        z: -0.27288273
+      TangentOut:
+        x: 0
+        y: 0
+        z: 0.27288273
+      Rotation:
+        value:
+          x: -0.24967214
+          y: -0.07241299
+          z: -0.26897612
+          w: 0.92740065
+    m_MetaData:
+    - Mode: 0
+      Tension: 0.5
+    - Mode: 0
+      Tension: 0.5
+    - Mode: 0
+      Tension: 0.5
+    - Mode: 0
+      Tension: 0.5
+    m_Closed: 0
+    m_IntData:
+      m_Data: []
+    m_FloatData:
+      m_Data: []
+    m_Float4Data:
+      m_Data: []
+    m_ObjectData:
+      m_Data: []
+  m_Knots:
+    m_KnotsLink: []
 --- !u!1001 &703297287107187478
 PrefabInstance:
   m_ObjectHideFlags: 0
