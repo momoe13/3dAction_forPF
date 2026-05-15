@@ -1,41 +1,64 @@
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Splines;
 
 public class CameraMove : MonoBehaviour
 {
+    [SerializeField] GameObject cameraRotateObj;
     [SerializeField] CinemachineSplineDolly cinemachineSplineDolly;
-    float dollSpeed = 1;
+  
+    Vector2 cameraInput;
 
-
-    Vector3 cameraSpeed;
-
+    [SerializeField] float dollySpeed = 1f;
+    [SerializeField] float rotateSpeed = 60f;
 
     //ロックオン機能
     [SerializeField] bool isRockon = true;
 
+    [SerializeField] Transform Player;
+
     void Update()
     {
+
+        cameraRotateObj.transform.position = Player.transform.position;
+
         if (cinemachineSplineDolly == null) return;
-
-        // スプラインの長さを取得
-        float splineLength = cinemachineSplineDolly.Spline.CalculateLength();
-
-        // 経路上の現在位置（0〜1）を時間経過で進める
-        float deltaDistance = dollSpeed * Time.deltaTime;
-        float deltaT = deltaDistance / splineLength;
-
-        cinemachineSplineDolly.CameraPosition += deltaT;
-
-
+        VerticalMove();
+        HorizontalMove();
     }
 
+    private void HorizontalMove()
+    {
+        float horizontal = cameraInput.x;
+
+        cameraRotateObj.transform.Rotate(0, horizontal * rotateSpeed * Time.deltaTime, 0);
+    }
+
+    private void VerticalMove()
+    {
+        // 縦入力
+        float vertical = cameraInput.y;
+
+        // Splineの長さ取得
+        float splineLength = cinemachineSplineDolly.Spline.CalculateLength();
+
+        // 入力値から移動量計算
+        float deltaDistance = vertical * dollySpeed * Time.deltaTime;
+
+        // 0～1の値へ変換
+        float deltaT = deltaDistance / splineLength;
+
+        // カメラ位置更新
+        cinemachineSplineDolly.CameraPosition += deltaT;
+
+        // 範囲制限
+        cinemachineSplineDolly.CameraPosition =
+            Mathf.Clamp01(cinemachineSplineDolly.CameraPosition);
+    }
 
     public void OnCamera(InputAction.CallbackContext context)
     {
-        cameraSpeed = new Vector3(context.ReadValue<Vector2>().x, 0f, context.ReadValue<Vector2>().y);
-
+        cameraInput = context.ReadValue<Vector2>();
     }
 
     public void OnRockon(InputAction.CallbackContext context)
