@@ -114,11 +114,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb7e1dfbca22d654ea388ceeacfb7f9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  effectManager: {fileID: 0}
   jumpPower: 0
   rotationSpeed: 10
   hp: 5
   isAtk: 0
   atkStep: 0
+  atkPos: {fileID: 3833258092876803490}
   atkErea:
   - {fileID: 4851913799708050943}
   shooter: {fileID: 0}
@@ -287,6 +289,11 @@ Animator:
 --- !u!4 &657257708060850356 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b4e41c89a356ba848bae7b656d1033be, type: 3}
+  m_PrefabInstance: {fileID: 1050945212549422943}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &3833258092876803490 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4298618736639210237, guid: b4e41c89a356ba848bae7b656d1033be, type: 3}
   m_PrefabInstance: {fileID: 1050945212549422943}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1629211609263980330

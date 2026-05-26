@@ -28,6 +28,9 @@ public enum AnimType
 public class CharaBase : MonoBehaviour
 {
 
+    [SerializeField]
+    EffectManager effectManager;
+
     //---------アニメーション------------
     protected AnimationClipTable animatClipTable;
     AnimType nowAnimType=AnimType.Idle;
@@ -58,9 +61,11 @@ public class CharaBase : MonoBehaviour
     [SerializeField]
     protected bool isAtk=false;
     bool nextAtk=false;
-    [SerializeField]
+    [SerializeField]//←消す
     int atkStep =0;
 
+    [SerializeField]
+    Transform atkPos;
 
     [Header("近距離攻撃範囲")]
     [SerializeField]
@@ -128,6 +133,7 @@ public class CharaBase : MonoBehaviour
         }
     }
 
+
     private void StartAttack(int step)
     {
         isAtk = true;
@@ -138,6 +144,11 @@ public class CharaBase : MonoBehaviour
 
         if(atkStep-1<=atkErea.Length) atkErea[atkStep - 1].enabled = true;
 
+        //ローカル座標をワールド座標に変換してエフェクト生成
+        Vector3 worldPos = transform.TransformPoint(atkPos.position);
+        effectManager.PlayEffect((Effects)atkStep, atkPos.position,transform.rotation);
+
+        Debug.Log("キャラクター" + atkPos.position);
 
         UpdateAnimState(type);
     }
@@ -217,6 +228,11 @@ public class CharaBase : MonoBehaviour
         if (hp <= 0) {
             isDeath = true;
             Death(); }
+    }
+
+    IEnumerator AnimSave()
+    {
+        return null;
     }
 
 

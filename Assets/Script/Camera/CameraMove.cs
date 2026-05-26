@@ -9,8 +9,8 @@ public class CameraMove : MonoBehaviour
   
     Vector2 cameraInput;
 
-    [SerializeField] float dollySpeed = 1f;
-    [SerializeField] float rotateSpeed = 60f;
+    float dollySpeed = 5f;
+    float rotateSpeed = 120f;
 
     //ロックオン機能
     [SerializeField] bool isRockon = true;
