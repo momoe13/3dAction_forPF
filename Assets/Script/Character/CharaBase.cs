@@ -148,7 +148,6 @@ public class CharaBase : MonoBehaviour
         Vector3 worldPos = transform.TransformPoint(atkPos.position);
         effectManager.PlayEffect((Effects)atkStep, atkPos.position,transform.rotation);
 
-        Debug.Log("キャラクター" + atkPos.position);
 
         UpdateAnimState(type);
     }

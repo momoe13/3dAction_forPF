@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class Player :CharaBase
 {
@@ -9,6 +10,15 @@ public class Player :CharaBase
     [SerializeField]
     MeshRenderer[] weapons;
 
+    [SerializeField]
+    PlayerInput playerInput;
+
+    //インプット名
+    string fireActionName = "Fire";
+    string runActionName = "Run";
+
+    InputAction fireAction;
+    InputAction runAction;
 
     int MaxHP=30;
 
@@ -28,6 +38,8 @@ public class Player :CharaBase
             weapons[i].enabled=false;
         }
         weapons[atkType - 1].enabled=true;
+
+        runAction = playerInput.actions[runActionName];
     }
     private void Update()
     {
@@ -39,6 +51,7 @@ public class Player :CharaBase
         }
         InputMove();
 
+        //１ボタンで剣攻撃
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             atkType = 1;
@@ -46,6 +59,8 @@ public class Player :CharaBase
             weapons[0].enabled = true;
             weapons[1].enabled = false;
         }
+
+        //２ボタンで弓攻撃
         if (Input.GetKeyDown(KeyCode.Alpha2))
         { 
             atkType = 2;
@@ -56,7 +71,8 @@ public class Player :CharaBase
 
 
 
-        if (Input.GetMouseButtonDown(0)) SetAtk();
+       // if (Input.GetMouseButtonDown(0)) SetAtk();
+
 
         UpdateAtk();
     }
@@ -115,8 +131,8 @@ public class Player :CharaBase
 
             moveDirection = (camForward * v + camRight * h).normalized;
 
-
-            bool isDash = Input.GetKey(KeyCode.LeftShift);
+            
+            bool isDash = Input.GetKey(KeyCode.LeftShift) || runAction.IsPressed();
 
 
             //三項演算子（shift押してたら走る、押してないなら歩く。）
@@ -176,4 +192,18 @@ public class Player :CharaBase
         return plHp;
     }
 
+    public void OnFire(InputAction.CallbackContext context)
+    {
+        if(context.started) SetAtk();
+
+        //TODO:Xボタンだと反応せず、マウスだと3回入力になる
+        //InteractionsでPressOnly済み
+
+        Debug.Log("攻撃");
+    }
+
+    public void OnShoot(InputAction.CallbackContext context)
+    {
+        if(context.started) ShootAtk(layerNum);
+    }
 }
