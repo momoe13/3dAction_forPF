@@ -146,7 +146,8 @@ public class CharaBase : MonoBehaviour
 
         //ローカル座標をワールド座標に変換してエフェクト生成
         Vector3 worldPos = transform.TransformPoint(atkPos.position);
-        effectManager.PlayEffect((Effects)atkStep, atkPos.position,transform.rotation);
+        Debug.Log(transform.rotation);
+        effectManager.PlayEffect((Effects)atkStep, this.transform.position,transform.rotation);
 
 
         UpdateAnimState(type);
@@ -184,6 +185,7 @@ public class CharaBase : MonoBehaviour
     //-----遠距離攻撃---------------
     protected void ShootAtk(int layerNum)
     {
+        UpdateAnimState(AnimType.Shoot);
         shooter.Shoot(layerNum);
     }
 
@@ -195,7 +197,8 @@ public class CharaBase : MonoBehaviour
         if (nowAnimType == newAnimType) return;
         nowAnimType = newAnimType;
 
-        //Debug.Log(newAnimType);
+        if(this.gameObject.name=="Player")   Debug.Log("Playerモーション："+newAnimType);
+
         animatClipTable.PlayForce(newAnimType);
 
     }

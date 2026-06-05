@@ -15,14 +15,14 @@ public class UI_Manager : MonoBehaviour
 
     [SerializeField] Text FinishTxt;
 
-    bool isGamer = true;
+    bool isGame = true;
 
 
     private void Start()
     {
         slider.value = 1;
         scoreTxt.text = score+"/"+maxScore;
-        FinishTxt.enabled=false;
+        FinishTxt.enabled = false;
     }
 
     private void Update()

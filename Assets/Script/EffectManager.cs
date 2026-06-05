@@ -11,10 +11,11 @@ public class EffectManager : MonoBehaviour
 {
     [SerializeField] ParticleSystem[] particle;
 
+    [SerializeField] GameObject[] effects;
 
     public void PlayEffect(Effects effectNum,Vector3 instantPos ,Quaternion rotate)
     {
-        Instantiate(particle[(int)effectNum],instantPos,rotate);   
+        Instantiate(effects[(int)effectNum],instantPos,rotate);   
     }
 
 }

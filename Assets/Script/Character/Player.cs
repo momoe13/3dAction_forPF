@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class Player :CharaBase
@@ -15,7 +14,7 @@ public class Player :CharaBase
 
     //インプット名
     string fireActionName = "Fire";
-    string runActionName = "Run";
+    readonly string runActionName = "Run";
 
     InputAction fireAction;
     InputAction runAction;
@@ -199,7 +198,6 @@ public class Player :CharaBase
         //TODO:Xボタンだと反応せず、マウスだと3回入力になる
         //InteractionsでPressOnly済み
 
-        Debug.Log("攻撃");
     }
 
     public void OnShoot(InputAction.CallbackContext context)
