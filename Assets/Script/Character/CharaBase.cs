@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public enum AnimType
 {
@@ -33,7 +32,10 @@ public class CharaBase : MonoBehaviour
 
     //---------アニメーション------------
     protected AnimationClipTable animatClipTable;
-    AnimType nowAnimType=AnimType.Idle;
+    AnimType pastAnimType = AnimType.Idle;
+    AnimType currentAnimType = AnimType.Idle;
+
+    protected bool isHit = false;
 
     //--------------------------------
 
@@ -91,7 +93,7 @@ public class CharaBase : MonoBehaviour
         { dropItem.SetActive(false); }
 
             // 初期状態を明示的に再生
-            UpdateAnimState(nowAnimType);
+            UpdateAnimState(currentAnimType);
     }
 
 
@@ -146,7 +148,6 @@ public class CharaBase : MonoBehaviour
 
         //ローカル座標をワールド座標に変換してエフェクト生成
         Vector3 worldPos = transform.TransformPoint(atkPos.position);
-        Debug.Log(transform.rotation);
         effectManager.PlayEffect((Effects)atkStep, this.transform.position,transform.rotation);
 
 
@@ -194,24 +195,41 @@ public class CharaBase : MonoBehaviour
 
     protected void UpdateAnimState(AnimType newAnimType)
     {
-        if (nowAnimType == newAnimType) return;
-        nowAnimType = newAnimType;
-
-        if(this.gameObject.name=="Player")   Debug.Log("Playerモーション："+newAnimType);
+        if (currentAnimType == newAnimType) return;
+        currentAnimType = newAnimType;
 
         animatClipTable.PlayForce(newAnimType);
 
     }
 
+    protected void AnimationBack()
+    {
+        if ( currentAnimType ==AnimType.Hit && animatClipTable.GetAnimStateInfo() >= 1.0f) 
+        {
+            isHit = false;
+            currentAnimType = pastAnimType;
+            animatClipTable.AnimPlay(currentAnimType);
+        }
+    }
 
-
+    /// <summary>
+    /// 
     //被ダメージ処理
     //TODO:ダメージ時赤く点滅する
+    /// </summary>
+    /// <param name="damage"></param>
+    /// <param name="hitPos"></param>
+    /// <param name="knockbackPower"></param>
     public void Damage(int damage, Vector3 hitPos, float knockbackPower)
     {
         if (isInvincible) return;
 
-        animatClipTable.PlayForce(AnimType.Hit);
+        Debug.Log(this.name+ "ダメージ");
+
+        pastAnimType = currentAnimType;
+        isHit = true;
+        UpdateAnimState(AnimType.Hit);
+
 
         //攻撃方向を受け取り、その方向に下がる
         Vector3 hitVec = (this.transform.position - hitPos).normalized;

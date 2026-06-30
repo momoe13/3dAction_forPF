@@ -450,6 +450,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 320285686194560837}
     m_Modifications:
+    - target: {fileID: 2642361276550885519, guid: 53b5668a6793d7d45b828f8189acf5a2, type: 3}
+      propertyPath: m_Size.x
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2642361276550885519, guid: 53b5668a6793d7d45b828f8189acf5a2, type: 3}
+      propertyPath: m_Size.z
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 3657636046445412192, guid: 53b5668a6793d7d45b828f8189acf5a2, type: 3}
       propertyPath: m_Name
       value: FollowArea

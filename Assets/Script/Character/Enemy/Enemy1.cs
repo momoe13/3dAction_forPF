@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 
 public class Enemy1 : CharaBase
 {
@@ -20,7 +19,11 @@ public class Enemy1 : CharaBase
     {
         if(isDeath)return;
 
-        UpdateAtk                                                                                                                                                  ();
+        AnimationBack();
+
+        if(isHit)return;
+
+        UpdateAtk();
 
         attackSpawnTimer += Time.deltaTime;
         if(attackSpawnTimer > attackInterval)

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Timeline;
 
 public class Player :CharaBase
 {
@@ -48,6 +49,10 @@ public class Player :CharaBase
             if (Input.GetKeyDown(KeyCode.Return)) StateReset();
             return;
         }
+
+        AnimationBack();
+
+        //移動
         InputMove();
 
         //１ボタンで剣攻撃
@@ -70,14 +75,15 @@ public class Player :CharaBase
 
 
 
-       // if (Input.GetMouseButtonDown(0)) SetAtk();
-
+        // if (Input.GetMouseButtonDown(0)) SetAtk();
 
         UpdateAtk();
     }
 
     private void InputMove()
     {
+        if(isHit)return;
+
         //ローリング終了
         if (isInvincible)
         {
